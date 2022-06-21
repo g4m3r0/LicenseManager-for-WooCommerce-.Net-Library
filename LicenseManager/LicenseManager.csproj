@@ -1,10 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <ApplicationIcon />
     <StartupObject />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A C# Library for the LicenseManager for WooCommerce formerly known as LicenseManager.at. This library makes it easy to activate or validate software licenses from .Net applications.</Description>
+    <PackageProjectUrl>https://gsoftwarelab.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>license-management, licensemanager, woocommerce, software-licensing, wordpress, license</PackageTags>
+    <Company>GSoftwareLab</Company>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Properties\**" />
@@ -13,5 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Management" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\workflows\nuget.yml" />
   </ItemGroup>
 </Project>
