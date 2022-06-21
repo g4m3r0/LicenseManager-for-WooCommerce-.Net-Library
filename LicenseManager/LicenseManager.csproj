@@ -14,14 +14,14 @@
     <Company>GSoftwareLab</Company>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove=".github\**" />
     <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove=".github\**" />
     <EmbeddedResource Remove="Properties\**" />
+    <None Remove=".github\**" />
     <None Remove="Properties\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Management" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".github\workflows\nuget.yml" />
   </ItemGroup>
 </Project>
