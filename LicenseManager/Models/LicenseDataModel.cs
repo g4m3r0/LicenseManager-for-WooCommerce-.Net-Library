@@ -8,13 +8,13 @@ namespace LicenseManager.Models
 {
     public class LicenseDataModel
     {
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; } = 0;
 
-        public string OrderId { get; set; } = string.Empty;
+        public int? OrderId { get; set; }
 
-        public string ProductId { get; set; } = string.Empty;
+        public int ProductId { get; set; } = 0;
 
-        public string UserId { get; set; } = string.Empty;
+        public int? UserId { get; set; }
 
         public string LicenseKey { get; set; } = string.Empty;
 
@@ -22,16 +22,16 @@ namespace LicenseManager.Models
 
         public string ValidFor { get; set; } = string.Empty;
 
-        public string Source { get; set; } = string.Empty;
+        public int? Source { get; set; }
 
-        public int Status { get; set; } = 0;
+        public int? Status { get; set; }
 
         public int TimesActivated { get; set; } = 0;
         public int TimesActivatedMax { get; set; } = 0;
         public int RemainingActivations { get; set; } = 0;
 
         public string CreatedAt { get; set; } = string.Empty;
-        public int CreatedBy { get; set; } = 0;
+        public int? CreatedBy { get; set; }
         public string UpdatedAt { get; set; } = string.Empty;
         public int UpdatedBy { get; set; } = 0;
     }
