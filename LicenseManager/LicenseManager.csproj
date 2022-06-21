@@ -1,27 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <OutputType>Library</OutputType>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <ApplicationIcon />
-    <StartupObject />
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>A C# Library for the LicenseManager for WooCommerce formerly known as LicenseManager.at. This library makes it easy to activate or validate software licenses from .Net applications.</Description>
-    <PackageProjectUrl>https://gsoftwarelab.com</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>license-management, licensemanager, woocommerce, software-licensing, wordpress, license</PackageTags>
-    <Company>GSoftwareLab</Company>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove=".github\**" />
-    <Compile Remove="Properties\**" />
-    <EmbeddedResource Remove=".github\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <None Remove=".github\**" />
-    <None Remove="Properties\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Management" Version="6.0.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net461;net462;net47;net471;net472;net48;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<OutputType>Library</OutputType>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<ApplicationIcon />
+		<StartupObject />
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>A C# Library for the LicenseManager for WooCommerce formerly known as LicenseManager.at. This library makes it easy to activate or validate software licenses from .Net applications.</Description>
+		<PackageProjectUrl>https://gsoftwarelab.com</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>license-management, licensemanager, woocommerce, software-licensing, wordpress, license</PackageTags>
+		<Company>GSoftwareLab</Company>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove=".github\**" />
+		<Compile Remove="Properties\**" />
+		<EmbeddedResource Remove=".github\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<None Remove=".github\**" />
+		<None Remove="Properties\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Management" Version="6.0.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.Json" Version="6.0.5" />
+	</ItemGroup>
 </Project>

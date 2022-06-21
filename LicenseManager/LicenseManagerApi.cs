@@ -17,8 +17,8 @@ namespace LicenseManager
         /// <param name="consumerSecret">Your API consumer secret.</param>
         public LicenseManagerApi(string host, string consumerKey, string consumerSecret)
         {
-            _requestHelper = new(host, consumerKey, consumerSecret);
-            _serializeHelper = new();
+            _requestHelper = new RequestHelper(host, consumerKey, consumerSecret);
+            _serializeHelper = new SerializeHelper();
         }
 
         /// <summary>
