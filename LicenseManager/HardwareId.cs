@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Management;
 using System.Security.Cryptography;
 
@@ -24,13 +20,13 @@ namespace LicenseManager
         /// </summary>
         private static string Sha256Hash(string textToHash)
         {
-            var crypt = new SHA256Managed();
+            var crypt = SHA256.Create();
             var hash = string.Empty;
-            var crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(textToHash));
+            var byteArray = crypt.ComputeHash(Encoding.ASCII.GetBytes(textToHash));
 
-            foreach (var theByte in crypto)
+            foreach (var b in byteArray)
             {
-                hash += theByte.ToString("x2");
+                hash += b.ToString("x2");
             }
 
             return hash;
@@ -40,11 +36,10 @@ namespace LicenseManager
         {
             try
             {
-                using (var enumerator = new ManagementClass(wmiClass).GetInstances().GetEnumerator())
-                {
-                    if (enumerator.MoveNext())
-                        return (ManagementObject)enumerator.Current;
-                }
+                using var enumerator = new ManagementClass(wmiClass).GetInstances().GetEnumerator();
+
+                if (enumerator.MoveNext())
+                    return (ManagementObject)enumerator.Current;
             } catch {
                 //ignore error
             }

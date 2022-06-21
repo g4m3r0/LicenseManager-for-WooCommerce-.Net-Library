@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LicenseManager.Models
 {
-    class LicenseDataModel
+    public class LicenseDataModel
     {
         public string Id { get; set; } = string.Empty;
 
@@ -28,7 +28,7 @@ namespace LicenseManager.Models
 
         public int TimesActivated { get; set; } = 0;
         public int TimesActivatedMax { get; set; } = 0;
-        public int RemainingActivations { get; set; } = 0; //todo: unused remove?
+        public int RemainingActivations { get; set; } = 0;
 
         public string CreatedAt { get; set; } = string.Empty;
         public int CreatedBy { get; set; } = 0;

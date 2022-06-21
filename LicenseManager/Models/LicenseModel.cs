@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LicenseManager.Models
 {
-    class LicenseModel
+    public class LicenseModel
     {
         public bool Success { get; set; } = false;
         public LicenseDataModel Data { get; set; }
