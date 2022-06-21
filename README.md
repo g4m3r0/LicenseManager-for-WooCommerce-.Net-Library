@@ -22,4 +22,4 @@ MessageBox.Show(success
 ```
 
 # Example WinForms Project
-You can find an example project at https://github.com/g4m3r0/LicenseManager.at-.Net-Library-Example .
+You can find an example project at https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library-Example.
