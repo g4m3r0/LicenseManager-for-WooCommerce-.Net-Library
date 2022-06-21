@@ -20,7 +20,7 @@ namespace LicenseManager
         private static HttpClient _httpClient;
 
         /// <summary>
-        /// 
+        /// Create new RequestHelper
         /// </summary>
         /// <param name="host">Your wordpress host address (e.g. https://domain.com).</param>
         /// <param name="consumerKey">Your API consumer key.</param>
@@ -32,6 +32,7 @@ namespace LicenseManager
             this._consumerSecret = consumerSecret;
 
             _httpClient = new HttpClient();
+
             //todo: set base address to host
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json")); //only json data
@@ -42,6 +43,7 @@ namespace LicenseManager
             var requestUrl = requestType == 0
                 ? GetActivateLicenseRequestUrl(licenseKey)
                 : GetValidateLicenseRequestUrl(licenseKey);
+
             string error = null;
             string jsonString = "";
 
@@ -49,8 +51,8 @@ namespace LicenseManager
             {
                 var response = await _httpClient.GetAsync(requestUrl);
 
-                if (response.IsSuccessStatusCode)
-                    throw new Exception("Http status code not successful.");
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Http status code not successful or reaches max activation count.");
 
                 jsonString = await response.Content.ReadAsStringAsync();
             }
@@ -68,7 +70,7 @@ namespace LicenseManager
         }
         private string GetValidateLicenseRequestUrl(string licenseKey)
         {
-            return $"{this._host}/wp-json/lmfwc/v2/licenses/validate/{licenseKey}?consumer_key={this._consumerKey}&consumer_secret={this._consumerSecret}";
+            return $"{this._host}/wp-json/lmfwc/v2/licenses/{licenseKey}?consumer_key={this._consumerKey}&consumer_secret={this._consumerSecret}";
         }
     }
 }
