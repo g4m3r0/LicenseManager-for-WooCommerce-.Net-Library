@@ -4,7 +4,7 @@ using LicenseManager.Models;
 
 namespace LicenseManager
 {
-    public class LicenseManager
+    public class LicenseManagerApi
     {
         private readonly RequestHelper _requestHelper;
         private readonly SerializeHelper _serializeHelper;
@@ -15,8 +15,7 @@ namespace LicenseManager
         /// <param name="host">Your wordpress host address (e.g. https://domain.com).</param>
         /// <param name="consumerKey">Your API consumer key.</param>
         /// <param name="consumerSecret">Your API consumer secret.</param>
-        /// <param name="verifyHardwareId">Choose if the hardware id should be verified.</param>
-        public LicenseManager(string host, string consumerKey, string consumerSecret)
+        public LicenseManagerApi(string host, string consumerKey, string consumerSecret)
         {
             _requestHelper = new(host, consumerKey, consumerSecret);
             _serializeHelper = new();
@@ -79,17 +78,17 @@ namespace LicenseManager
             if (license == null)
                 return (false, "License is null.");
 
-            if (license.Data.LicenseKey != licenseKey)
-                return (false, "License not matching.");
+            if (!license.Success)
+                return (false, "License request failed: Not successful.");
 
-            if (license.Data.ProductId != productId)
+            if (license.Data.LicenseKey != licenseKey)
+                return (false, "LicenseKey not matching response.");
+
+            if (license.Data.ProductId.ToString() != productId)
                 return (false, "ProductId not matching.");
 
             if (license.Data.TimesActivated > license.Data.TimesActivatedMax)
                 return (false, "TimesActivated > TimesActivatedMax");
-
-            if (!license.Success)
-                return (false, "Not successful.");
 
             return (true, null);
         }
