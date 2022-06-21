@@ -36,10 +36,11 @@ namespace LicenseManager
         {
             try
             {
-                using var enumerator = new ManagementClass(wmiClass).GetInstances().GetEnumerator();
-
-                if (enumerator.MoveNext())
-                    return (ManagementObject)enumerator.Current;
+                using (var enumerator = new ManagementClass(wmiClass).GetInstances().GetEnumerator())
+                {
+                    if (enumerator.MoveNext())
+                        return (ManagementObject)enumerator.Current;
+                }
             } catch {
                 //ignore error
             }
