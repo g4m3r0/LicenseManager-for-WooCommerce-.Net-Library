@@ -1,6 +1,14 @@
 ﻿name: "Deploy to NuGet"
 
-on: ["push"]
+on:
+  push:
+    branches:
+      - "main"
+      - "nuget"
+  pull_request:
+    branches:
+      - "main"
+      - "nuget"
 
 env:
   PROJECT_PATH: 'LicenseManager\LicenseManager.csproj'
