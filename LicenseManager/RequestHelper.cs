@@ -52,7 +52,7 @@ namespace LicenseManager
                 var response = await _httpClient.GetAsync(requestUrl);
 
                 if (!response.IsSuccessStatusCode)
-                    throw new Exception("Http status code not successful or reaches max activation count.");
+                    throw new Exception("Http status code not successful or reached max activation count.");
 
                 jsonString = await response.Content.ReadAsStringAsync();
             }
