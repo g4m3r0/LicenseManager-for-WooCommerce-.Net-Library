@@ -48,6 +48,32 @@ namespace LicenseManager
         }
 
         /// <summary>
+        /// Deactivate license key. (TimesActivated will be decreased if successful)
+        /// </summary>
+        /// <param name="licenseKey"></param>
+        /// <param name="productId"></param>
+        /// <returns>Success: True if license was activated, Message: Error message</returns>
+        public async Task<(bool, string)> DeActivateLicenseAsync(string licenseKey, string productId)
+        {
+            LicenseModel license;
+            var (jsonString, error) = await _requestHelper.GetLicenseJsonAsync(licenseKey, Enums.RequestTypeEnum.DeActivate);
+
+            if (error != null)
+                return (false, error);
+
+            try
+            {
+                license = _serializeHelper.Deserialize(jsonString);
+            }
+            catch (Exception e)
+            {
+                return (false, e.Message);
+            }
+
+            return CheckLicenseResponse(license, licenseKey, productId);
+        }
+
+        /// <summary>
         /// Validate license key.
         /// </summary>
         /// <param name="licenseKey"></param>

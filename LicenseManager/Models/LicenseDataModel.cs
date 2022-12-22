@@ -26,13 +26,13 @@ namespace LicenseManager.Models
 
         public int? Status { get; set; }
 
-        public int TimesActivated { get; set; } = 0;
-        public int TimesActivatedMax { get; set; } = 0;
-        public int RemainingActivations { get; set; } = 0;
+        public int? TimesActivated { get; set; } = 0;
+        public int? TimesActivatedMax { get; set; } = 0;
+        public int? RemainingActivations { get; set; } = 0;
 
         public string CreatedAt { get; set; } = string.Empty;
         public int? CreatedBy { get; set; }
         public string UpdatedAt { get; set; } = string.Empty;
-        public int UpdatedBy { get; set; } = 0;
+        public int? UpdatedBy { get; set; } = 0;
     }
 }
