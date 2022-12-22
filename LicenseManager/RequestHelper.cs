@@ -40,19 +40,34 @@ namespace LicenseManager
 
         public async Task<(string, string)> GetLicenseJsonAsync(string licenseKey, RequestTypeEnum requestType)
         {
-            var requestUrl = requestType == 0
-                ? GetActivateLicenseRequestUrl(licenseKey)
-                : GetValidateLicenseRequestUrl(licenseKey);
+            string requestUrl;
+            switch (requestType)
+            {
+                case RequestTypeEnum.Activate:
+                    requestUrl = GetActivateLicenseRequestUrl(licenseKey);
+                    break;
+                case RequestTypeEnum.DeActivate:
+                    requestUrl = GetDeActivateLicenseRequestUrl(licenseKey);
+                    break;
+                case RequestTypeEnum.Validate:
+                    requestUrl = GetValidateLicenseRequestUrl(licenseKey);
+                    break;
+                default:
+                    requestUrl = "";
+                    break;
+            }
 
             string error = null;
             string jsonString = "";
 
             try
             {
+                if (string.IsNullOrEmpty(requestUrl)) throw new ArgumentNullException(nameof(requestUrl));
+
                 var response = await _httpClient.GetAsync(requestUrl);
 
                 if (!response.IsSuccessStatusCode)
-                    throw new Exception("Http status code not successful or reached max activation count.");
+                    throw new Exception("Http status code not successful or reached maximum activation count.");
 
                 jsonString = await response.Content.ReadAsStringAsync();
             }
@@ -67,6 +82,10 @@ namespace LicenseManager
         private string GetActivateLicenseRequestUrl(string licenseKey)
         {
             return $"{this._host}/wp-json/lmfwc/v2/licenses/activate/{licenseKey}?consumer_key={this._consumerKey}&consumer_secret={this._consumerSecret}";
+        }
+        private string GetDeActivateLicenseRequestUrl(string licenseKey)
+        {
+            return $"{this._host}/wp-json/lmfwc/v2/licenses/deactivate/{licenseKey}?consumer_key={this._consumerKey}&consumer_secret={this._consumerSecret}";
         }
         private string GetValidateLicenseRequestUrl(string licenseKey)
         {
