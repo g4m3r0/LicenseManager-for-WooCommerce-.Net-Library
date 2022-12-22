@@ -3,7 +3,7 @@
 [![NuGet Downloads](https://img.shields.io/nuget/dt/wk.NuGetBadge.svg)](https://www.nuget.org/packages/LicenseManager)
 [![Actions](https://github.com/wk-j/nuget-badge/workflows/NuGet/badge.svg)](https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library/actions)
 
-A C# Library for the [LicenseManager for WooCommerce](https://github.com/wpexpertsio/license-manager-woocommerce) formerly known as LicenseManager.at. This library makes it easy to activate or validate software licenses from .Net applications.
+A C# Library for the [LicenseManager for WooCommerce](https://github.com/wpexpertsio/license-manager-woocommerce) (formerly known as LicenseManager.at). This library makes it easy to activate or validate software licenses from .Net applications.
 
 ## Download / Nuget
 Get the library from [NuGet](https://www.nuget.org/packages/LicenseManager/).
