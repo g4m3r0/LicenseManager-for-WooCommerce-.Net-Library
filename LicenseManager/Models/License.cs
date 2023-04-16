@@ -64,27 +64,6 @@
         /// </summary>
         public LicenseStatus Status { get; set; }
 
-        [JsonPropertyName("status")]
-        private string RawStatus
-        {
-            get
-            {
-                return this.Status.ToString();
-            }
-
-            set
-            {
-                if (this.RawStatus == value)
-                {
-                    return;
-                }
-
-                this.RawStatus = value;
-                Enum.TryParse<LicenseStatus>(value, out var temp);
-                this.Status = temp;
-            }
-        }
-
         /// <summary>
         /// Gets or sets the number of times the license has been activated.
         /// </summary>
@@ -122,5 +101,25 @@
         /// </summary>
         [JsonPropertyName("updatedBy")]
         public int UpdatedBy { get; set; }
+
+        [JsonPropertyName("status")]
+        private string RawStatus
+        {
+            get
+            {
+                return this.Status.ToString();
+            }
+
+            set
+            {
+                if (this.RawStatus != value)
+                {
+                    this.RawStatus = value;
+                }
+
+                Enum.TryParse<LicenseStatus>(value, out var temp);
+                this.Status = temp;
+            }
+        }
     }
 }

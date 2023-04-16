@@ -38,29 +38,7 @@
         /// <summary>
         /// Gets or sets the status of the license (e.g., active, inactive).
         /// </summary>
-
         public LicenseStatus Status { get; set; }
-
-        [JsonPropertyName("status")]
-        private string RawStatus
-        {
-            get
-            {
-                return this.Status.ToString();
-            }
-
-            set
-            {
-                if (this.RawStatus == value)
-                {
-                    return;
-                }
-
-                this.RawStatus = value;
-                Enum.TryParse<LicenseStatus>(value, out var temp);
-                this.Status = temp;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the maximum number of times the license can be activated.
@@ -73,5 +51,25 @@
         /// </summary>
         [JsonPropertyName("user_id")]
         public int UserId { get; set; }
+
+        [JsonPropertyName("status")]
+        private string RawStatus
+        {
+            get
+            {
+                return this.Status.ToString();
+            }
+
+            set
+            {
+                if (this.RawStatus != value)
+                {
+                    this.RawStatus = value;
+                }
+
+                Enum.TryParse<LicenseStatus>(value, out var temp);
+                this.Status = temp;
+            }
+        }
     }
 }
