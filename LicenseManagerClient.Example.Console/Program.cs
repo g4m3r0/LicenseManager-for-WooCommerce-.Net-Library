@@ -8,7 +8,7 @@ using LicenseManagerClient.Lib.Models;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
         Console.WriteLine("LicenseManagerClient Hello World!");
 
@@ -28,10 +28,10 @@ internal class Program
         var licenseKey = "C124A123C412";
 
         // List all licenses
-        ListAllLicenses(client);
+        //ListAllLicenses(client);
 
         // Retrieve a license
-        //RetriveSingleLicense(client, licenseKey);
+        //RetrieveSingleLicense(client, licenseKey);
 
         // Create a license
         //CreateSingleLicense(client);
@@ -49,21 +49,28 @@ internal class Program
         //ValidateLicense(client, licenseKey);
 
         // List all generators
-        ListGenerators(client);
+        //ListGenerators(client);
 
         // Retrieve specific generator
+        //RetrieveSingleGenerator(client, 1);
 
         // Create a generator
+        //CreateSingleGenerator(client);
 
         // Update a generator
+        //UpdateGenerator(client, 1);
 
         // Generate generator
+        //GeneratorGenerate(client, 1);
 
         // VALIDATE CUSTOMER LICENSES
+        //ValidateCustomerLicense(client, 1);
 
         // Products/ping
+        //ProductsPing(client);
 
         // Products/update
+        //ProductsUpdate(client, licenseKey);
     }
 
     public static void ListAllLicenses(LicenseManagerClient client)
@@ -79,7 +86,7 @@ internal class Program
         }
     }
 
-    public static void RetriveSingleLicense(LicenseManagerClient client, string licenseKey)
+    public static void RetrieveSingleLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Retrieve a license");    
         var licenseResponse = client.RetrieveLicense(licenseKey).Result;
@@ -178,6 +185,137 @@ internal class Program
         {
             OutputObjectProperties(generator);
         }
+    }
+
+    public static void RetrieveSingleGenerator(LicenseManagerClient client, int generatorId)
+    {
+        Console.WriteLine("Retrieve a Generator");
+        var generatorResponse = client.RetrieveGenerator(generatorId).Result;
+
+        Console.WriteLine($"Success: {generatorResponse.Success}");
+        OutputObjectProperties(generatorResponse.Data);
+    }
+
+    public static void CreateSingleGenerator(LicenseManagerClient client)
+    {
+        Console.WriteLine("Create a Generator");
+
+        var newGenerator = new CreateGenerator()
+        {
+            Name = "Test Generator",
+            Charset = "LICENSE_GENERATE",
+            Chunks = 7,
+            ChunkLength = 2,
+            TimesActivatedMax = 10,
+            Separator = "-",
+            Prefix = "PRE",
+            Suffix = "SUFFIX",
+            ExpiresIn = 10
+        };
+
+        var createResponse = client.CreateGenerator(newGenerator).Result;
+
+        Console.WriteLine($"Success: {createResponse.Success}");
+        OutputObjectProperties(createResponse.Data);
+    }
+
+    public static void UpdateGenerator(LicenseManagerClient client, int generatorId)
+    {
+        Console.WriteLine("Update a Generator");
+
+        var updatedGenerator = new CreateGenerator()
+        {
+            Name = "Test Generator",
+            Charset = "LICENSE_GENERATE",
+            Chunks = 7,
+            ChunkLength = 2,
+            TimesActivatedMax = 10,
+            Separator = "-",
+            Prefix = "PRE",
+            Suffix = "SUFFIX",
+            ExpiresIn = 10
+        };
+
+        var updateResponse = client.UpdateGenerator(updatedGenerator, generatorId).Result;
+
+        Console.WriteLine($"Success: {updateResponse.Success}");
+        OutputObjectProperties(updateResponse.Data);
+    }
+
+    public static void GeneratorGenerate(LicenseManagerClient client, int generatorId)
+    {
+        // TODO not working
+        // seems like its not implemented by the WP plugin and the documentation is just wrong
+        // No route was found matching the URL and request method
+
+        Console.WriteLine("Generate License Keys");
+
+        var generate = new GeneratorGenerate()
+        {
+            Amount = 10,
+            Save = true,
+            Status = LicenseStatus.Active,
+            OrderId = null,
+            ProductId = 16,
+            UserId = 1,
+        };
+
+        var generateResponse = client.GenerateGenerator(generate, generatorId).Result;
+
+        Console.WriteLine($"Success: {generateResponse.Success}");
+
+        foreach(var license in generateResponse.Data)
+        {
+            Console.WriteLine(license);
+        }
+    }
+
+    public static void ValidateCustomerLicense(LicenseManagerClient client, int customerId)
+    {
+        // TODO not working
+        // Maybe only available for PRO?
+        // No route was found matching the URL and request method
+
+        Console.WriteLine("Validate customer license");
+        var licenseResponse = client.ValidateCustomerLicenses(customerId).Result;
+
+        Console.WriteLine($"Success: {licenseResponse.Success}");
+        OutputObjectProperties(licenseResponse.Data);
+    }
+
+    public static void ProductsPing(LicenseManagerClient client)
+    {
+        // TODO not working
+        // Maybe only available for PRO?
+        // No route was found matching the URL and request method
+
+        Console.WriteLine("Ping (test communication)");
+
+        var pingRequest = new PingRequest()
+        {
+            LicenseKey = "Test",
+            ProductName = "Test",
+            Host = "localhost",
+        };
+
+        var response = client.ProductsPing(pingRequest).Result;
+
+        Console.WriteLine($"Success: {response.Success}");
+        OutputObjectProperties(response.Data);
+    }
+
+    public static void ProductsUpdate(LicenseManagerClient client, string licenseKey)
+    {
+        // TODO not working
+        // Maybe only available for PRO?
+        // No route was found matching the URL and request method
+
+        Console.WriteLine("List product assigned to key");
+
+        var response = client.ProductsUpdate(licenseKey).Result;
+
+        Console.WriteLine($"Success: {response.Success}");
+        OutputObjectProperties(response.Data);
     }
 
     public static void OutputObjectProperties(object obj)
