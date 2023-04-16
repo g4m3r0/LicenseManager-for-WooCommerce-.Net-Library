@@ -1,13 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LicenseManager.Models
 {
-    public class GeneratorResponse
+    public class GeneratorGenerateResponse
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
 
         [JsonPropertyName("data")]
-        public Generator Data { get; set; }
+        public List<string> Data { get; set; }
     }
 }

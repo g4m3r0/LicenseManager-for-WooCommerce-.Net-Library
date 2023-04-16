@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace LicenseManager.Models
