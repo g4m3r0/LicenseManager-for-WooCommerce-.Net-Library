@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
-
-namespace LicenseManager.Models
+﻿namespace LicenseManagerClient.Lib.Models
 {
+    using System;
+    using System.Text.Json.Serialization;
+    using JsonConverter;
+
     public class Generator
     {
         [JsonPropertyName("id")]
@@ -23,7 +22,7 @@ namespace LicenseManager.Models
         public int ChunkLength { get; set; }
 
         [JsonPropertyName("timesActivatedMax")]
-        public int TimesActivatedMax { get; set; }
+        public string TimesActivatedMax { get; set; }
 
         [JsonPropertyName("separator")]
         public string Separator { get; set; }
@@ -35,16 +34,18 @@ namespace LicenseManager.Models
         public string Suffix { get; set; }
 
         [JsonPropertyName("expiresIn")]
-        public int ExpiresIn { get; set; }
+        public string ExpiresIn { get; set; }
 
         [JsonPropertyName("createdAt")]
-        public string CreatedAt { get; set; }
+        [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+        public DateTime? CreatedAt { get; set; }
 
         [JsonPropertyName("createdBy")]
         public string CreatedBy { get; set; }
 
         [JsonPropertyName("updatedAt")]
-        public string UpdatedAt { get; set; }
+        [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+        public DateTime? UpdatedAt { get; set; }
 
         [JsonPropertyName("updatedBy")]
         public string UpdatedBy { get; set; }
