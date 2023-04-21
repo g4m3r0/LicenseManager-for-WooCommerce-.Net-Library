@@ -10,6 +10,8 @@
     /// </summary>
     public class CustomDateTimeJsonConverter : JsonConverter<DateTime>
     {
+        private const string DateTimeFormat = @"yyyy-MM-dd HH:mm:ss";
+
         /// <summary>
         /// Reads and converts the JSON to a <see cref="DateTime"/> object.
         /// </summary>
@@ -23,7 +25,7 @@
             JsonSerializerOptions options) =>
                 DateTime.ParseExact(
                     reader.GetString(),
-                    "yyyy-MM-dd HH:mm:ss",
+                    DateTimeFormat,
                     CultureInfo.InvariantCulture);
 
         /// <summary>
@@ -38,7 +40,7 @@
             JsonSerializerOptions options) =>
                 writer.WriteStringValue(
                     dateTimeValue.ToString(
-                    "yyyy-MM-dd HH:mm:ss",
+                    DateTimeFormat,
                     CultureInfo.InvariantCulture));
     }
 }
