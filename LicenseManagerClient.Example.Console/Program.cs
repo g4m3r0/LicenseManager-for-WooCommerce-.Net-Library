@@ -97,7 +97,7 @@ internal class Program
     public static void ListAllLicenses(LicenseManagerClient client)
     {
         Console.WriteLine("List all licenses:");
-        var allLicensesResponse = client.ListLicenses().Result;
+        var allLicensesResponse = client.ListLicensesAsync().Result;
 
         Console.WriteLine($"Success: {allLicensesResponse.Success}");
 
@@ -109,8 +109,8 @@ internal class Program
 
     public static void RetrieveSingleLicense(LicenseManagerClient client, string licenseKey)
     {
-        Console.WriteLine("Retrieve a license");    
-        var licenseResponse = client.RetrieveLicense(licenseKey).Result;
+        Console.WriteLine("Retrieve a license");
+        var licenseResponse = client.RetrieveLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
@@ -135,7 +135,7 @@ internal class Program
             UserId = 1,
         };
 
-        var createLicenseResponse = client.CreateLicense(newLicense).Result;
+        var createLicenseResponse = client.CreateLicenseAsync(newLicense).Result;
 
         Console.WriteLine($"Success: {createLicenseResponse.Success}");
         OutputObjectProperties(createLicenseResponse.Data);
@@ -160,7 +160,7 @@ internal class Program
             UserId = 1,
         };
 
-        var updateLicenseResponse = client.UpdateLicense(newLicenseData, licenseKeyToUpdate).Result;
+        var updateLicenseResponse = client.UpdateLicenseAsync(newLicenseData, licenseKeyToUpdate).Result;
 
         Console.WriteLine($"Success: {updateLicenseResponse.Success}");
         OutputObjectProperties(updateLicenseResponse.Data);
@@ -169,7 +169,7 @@ internal class Program
     public static void ActivateLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Activate a license:");
-        var activateLicenseResponse = client.ActivateLicense(licenseKey).Result;
+        var activateLicenseResponse = client.ActivateLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {activateLicenseResponse.Success}");
         OutputObjectProperties(activateLicenseResponse.Data);
@@ -178,7 +178,7 @@ internal class Program
     public static void ActivateAndCheckLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Activate a license:");
-        var activateLicenseResponse = client.ActivateLicense(licenseKey).Result;
+        var activateLicenseResponse = client.ActivateLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {activateLicenseResponse.Success}");
         OutputObjectProperties(activateLicenseResponse.Data);
@@ -191,7 +191,7 @@ internal class Program
     public static void DeactivateLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Deactivate a license:");
-        var licenseResponse = client.DeactivateLicense(licenseKey).Result;
+        var licenseResponse = client.DeactivateLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
@@ -202,7 +202,7 @@ internal class Program
         // TODO product always null?
 
         Console.WriteLine("Validate a license:");
-        var licenseResponse = client.ValidateLicense(licenseKey).Result;
+        var licenseResponse = client.ValidateLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
@@ -211,7 +211,7 @@ internal class Program
     public static void ValidateAndCheckLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Validate a license:");
-        var licenseResponse = client.ValidateLicense(licenseKey).Result;
+        var licenseResponse = client.ValidateLicenseAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
@@ -224,11 +224,11 @@ internal class Program
     public static void ListGenerators(LicenseManagerClient client)
     {
         Console.WriteLine("List all generators:");
-        var allGenaratorsResponse = client.ListGenerators().Result;
+        var allGenaratorsResponse = client.ListGeneratorsAsync().Result;
 
         Console.WriteLine($"Success: {allGenaratorsResponse.Success}");
 
-        foreach(var generator in allGenaratorsResponse.Data)
+        foreach (var generator in allGenaratorsResponse.Data)
         {
             OutputObjectProperties(generator);
         }
@@ -237,7 +237,7 @@ internal class Program
     public static void RetrieveSingleGenerator(LicenseManagerClient client, int generatorId)
     {
         Console.WriteLine("Retrieve a Generator");
-        var generatorResponse = client.RetrieveGenerator(generatorId).Result;
+        var generatorResponse = client.RetrieveGeneratorAsync(generatorId).Result;
 
         Console.WriteLine($"Success: {generatorResponse.Success}");
         OutputObjectProperties(generatorResponse.Data);
@@ -260,7 +260,7 @@ internal class Program
             ExpiresIn = 10
         };
 
-        var createResponse = client.CreateGenerator(newGenerator).Result;
+        var createResponse = client.CreateGeneratorAsync(newGenerator).Result;
 
         Console.WriteLine($"Success: {createResponse.Success}");
         OutputObjectProperties(createResponse.Data);
@@ -283,7 +283,7 @@ internal class Program
             ExpiresIn = 10
         };
 
-        var updateResponse = client.UpdateGenerator(updatedGenerator, generatorId).Result;
+        var updateResponse = client.UpdateGeneratorAsync(updatedGenerator, generatorId).Result;
 
         Console.WriteLine($"Success: {updateResponse.Success}");
         OutputObjectProperties(updateResponse.Data);
@@ -307,11 +307,11 @@ internal class Program
             UserId = 1,
         };
 
-        var generateResponse = client.GenerateGenerator(generate, generatorId).Result;
+        var generateResponse = client.GenerateGeneratorAsync(generate, generatorId).Result;
 
         Console.WriteLine($"Success: {generateResponse.Success}");
 
-        foreach(var license in generateResponse.Data)
+        foreach (var license in generateResponse.Data)
         {
             Console.WriteLine(license);
         }
@@ -324,7 +324,7 @@ internal class Program
         // No route was found matching the URL and request method
 
         Console.WriteLine("Validate customer license");
-        var licenseResponse = client.ValidateCustomerLicenses(customerId).Result;
+        var licenseResponse = client.ValidateCustomerLicensesAsync(customerId).Result;
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
@@ -345,7 +345,7 @@ internal class Program
             Host = "localhost",
         };
 
-        var response = client.ProductsPing(pingRequest).Result;
+        var response = client.ProductsPingAsync(pingRequest).Result;
 
         Console.WriteLine($"Success: {response.Success}");
         OutputObjectProperties(response.Data);
@@ -359,7 +359,7 @@ internal class Program
 
         Console.WriteLine("List product assigned to key");
 
-        var response = client.ProductsUpdate(licenseKey).Result;
+        var response = client.ProductsUpdateAsync(licenseKey).Result;
 
         Console.WriteLine($"Success: {response.Success}");
         OutputObjectProperties(response.Data);
