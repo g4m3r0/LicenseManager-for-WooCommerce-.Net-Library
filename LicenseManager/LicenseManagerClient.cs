@@ -1,26 +1,34 @@
 ﻿namespace LicenseManagerClient.Lib
 {
     using System;
+    using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using System.Resources;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
     using global::LicenseManagerClient.Lib.JsonConverter;
-    using Models;
-    using License = Models.License;
+    using global::LicenseManagerClient.Lib.Models;
+    using License = global::LicenseManagerClient.Lib.Models.License;
 
     /// <summary>
     /// Represents a client for communicating with a License Manager API.
     /// </summary>
     public class LicenseManagerClient : IDisposable
     {
+        // TODO add configure await false to all async calls
+        private static readonly ResourceManager ResourceManager = new ResourceManager("LicenseManagerClient.Lib.Messages.Messages", typeof(LicenseManagerClient).Assembly);
+
         private readonly HttpClient httpClient = new HttpClient();
         private readonly string baseUrl;
         private readonly string consumerKey;
         private readonly string consumerSecret;
+        private readonly int productId;
 
         private readonly JsonSerializerOptions jsonSerializerOptions;
+
+        private readonly CultureInfo cultureInfo;
 
         // Flag to indicate if the object has already been disposed.
         private bool disposed = false;
@@ -31,11 +39,15 @@
         /// <param name="baseUrl">Your wordpress host address (e.g. https://domain.com).</param>
         /// <param name="consumerKey">Your API consumer key.</param>
         /// <param name="consumerSecret">Your API consumer secret.</param>
-        public LicenseManagerClient(string baseUrl, string consumerKey, string consumerSecret)
+        /// <param name="productId">The product ID to use for API calls.</param>
+        /// <param name="messageLanguage">The language to use for error messages.</param>
+        public LicenseManagerClient(string baseUrl, string consumerKey, string consumerSecret, int productId, CultureInfo messageLanguage)
         {
             this.baseUrl = baseUrl;
             this.consumerKey = consumerKey;
             this.consumerSecret = consumerSecret;
+            this.productId = productId;
+            this.cultureInfo = messageLanguage;
 
             // Add a custom JSON converter to handle the date format returned by the API.
             this.jsonSerializerOptions = new JsonSerializerOptions();
@@ -238,6 +250,79 @@
         }
 
         /// <summary>
+        /// Checks the license activation response and returns a CheckLicenseResponse based on the validation.
+        /// </summary>
+        /// <param name="licenseKeyResponse">The LicenseKeyResponse object containing the activation response.</param>
+        /// <param name="licenseKey">The license key that was used for activation.</param>
+        /// <returns>A CheckLicenseResponse object indicating the success or failure of the activation check.</returns>
+        public LicenseCheckResponse CheckLicenseActivation(LicenseKeyResponse licenseKeyResponse, string licenseKey)
+        {
+            if (licenseKeyResponse == null)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseResponseNull");
+            }
+
+            if (!licenseKeyResponse.Success)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseActivationFailed");
+            }
+
+            if (licenseKeyResponse.Data.LicenseKey != licenseKey)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseKeyNotMatching");
+            }
+
+            if (licenseKeyResponse.Data.ProductId != this.productId)
+            {
+                return this.GenerateCheckLicenseResponse(false, "ProductIdNotMatching");
+            }
+
+            if (licenseKeyResponse.Data.TimesActivated > licenseKeyResponse.Data.TimesActivatedMax)
+            {
+                return this.GenerateCheckLicenseResponse(false, "MaxActivationsReached");
+            }
+
+            return this.GenerateCheckLicenseResponse(true, "LicenseActivationSuccess");
+        }
+
+        /// <summary>
+        /// Checks the license validation response and returns a CheckLicenseResponse based on the validation.
+        /// </summary>
+        /// <param name="licenseValidationResponse">The LicenseValidationResponse object containing the validation response.</param>
+        /// <param name="licenseKey">The license key that was used for validation.</param>
+        /// <returns>A CheckLicenseResponse object indicating the success or failure of the validation check.</returns>
+        public LicenseCheckResponse CheckLicenseValidation(LicenseValidationResponse licenseValidationResponse, string licenseKey)
+        {
+            if (licenseValidationResponse == null)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseResponseNull");
+            }
+
+            if (!licenseValidationResponse.Success)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseValidationFailed");
+            }
+
+            // TODO Product is always null in the response.
+            if (licenseValidationResponse.Data.Product != null && licenseValidationResponse.Data.Product.Id != this.productId)
+            {
+                return this.GenerateCheckLicenseResponse(false, "ProductIdNotMatching");
+            }
+
+            if (licenseValidationResponse.Data.TimesActivated == null || licenseValidationResponse.Data.TimesActivated == 0)
+            {
+                return this.GenerateCheckLicenseResponse(false, "LicenseNotActivated");
+            }
+
+            if (licenseValidationResponse.Data.TimesActivated > licenseValidationResponse.Data.TimesActivatedMax)
+            {
+                return this.GenerateCheckLicenseResponse(false, "MaxActivationsReached");
+            }
+
+            return this.GenerateCheckLicenseResponse(true, "LicenseValidationSuccess");
+        }
+
+        /// <summary>
         /// Releases unmanaged resources used by the LicenseManagerClient.
         /// </summary>
         public void Dispose()
@@ -263,6 +348,22 @@
                 // Dispose unmanaged resources here, if any.
                 this.disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Generates a LicenseCheckResponse object based on the given success status and the resource name for the message.
+        /// </summary>
+        /// <param name="success">A boolean value indicating whether the operation was successful.</param>
+        /// <param name="resourceName">The name of the resource string to be used as the message in the response.</param>
+        /// <returns>A LicenseCheckResponse object with the specified success status and message.</returns>
+        private LicenseCheckResponse GenerateCheckLicenseResponse(bool success, string resourceName)
+        {
+            string message = ResourceManager.GetString(resourceName, this.cultureInfo);
+            return new LicenseCheckResponse()
+            {
+                Success = success,
+                Message = message,
+            };
         }
 
         /// <summary>
