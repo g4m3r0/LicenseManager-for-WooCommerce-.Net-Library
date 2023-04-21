@@ -3,7 +3,7 @@
     using System;
     using System.Text.Json.Serialization;
     using global::LicenseManagerClient.Lib.Enums;
-    using JsonConverter;
+    using global::LicenseManagerClient.Lib.JsonConverter;
 
     /// <summary>
     /// Represents a license object containing information about a specific license.
