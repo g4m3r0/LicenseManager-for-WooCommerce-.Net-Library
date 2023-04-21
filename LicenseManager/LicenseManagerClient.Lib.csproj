@@ -6,14 +6,17 @@
 		<ApplicationIcon />
 		<StartupObject />
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Description>A C# Library for the LicenseManager for WooCommerce formerly known as LicenseManager.at. This library makes it easy to activate or validate software licenses from .Net applications.</Description>
+		<Description>A C# library designed for seamless integration with LicenseManager for WooCommerce, formerly known as LicenseManager.at. This library simplifies the process of activating and validating software licenses in .NET applications, streamlining the implementation of license management functionality for developers.</Description>
 		<PackageProjectUrl>https://gsoftwarelab.com</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/g4m3r0/LicenseManager-for-WooCommerce-.Net-Library</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>license-management, licensemanager, woocommerce, software-licensing, wordpress, license</PackageTags>
 		<Company>GSoftwareLab</Company>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>$(VersionPrefix)</Version>
+		<Version>2.0.0</Version>
+		<Title>LicenseManager</Title>
+		<AssemblyVersion>2.0.0.0</AssemblyVersion>
+		<FileVersion>2.0.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
 	  <WarningLevel>1</WarningLevel>
@@ -39,7 +42,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.Management" Version="7.0.1" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Management" Version="6.0.1" />
 	</ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -48,5 +52,20 @@
 	<ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.Json" Version="6.0.5" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Messages\Messages.resx">
+	    <Generator></Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Messages\Messages.Designer.tt">
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	    <DependentUpon>Messages.resx</DependentUpon>
+	    <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 </Project>
