@@ -1,4 +1,4 @@
-﻿namespace LicenseManagerClient.Lib.Models
+﻿namespace LicenseManager.Lib.Models
 {
     /// <summary>
     /// Represents the response of a license check operation.

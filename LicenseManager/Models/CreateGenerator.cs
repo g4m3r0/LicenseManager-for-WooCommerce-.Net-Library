@@ -1,4 +1,4 @@
-﻿namespace LicenseManagerClient.Lib.Models
+﻿namespace LicenseManager.Lib.Models
 {
     using System.Text.Json.Serialization;
 

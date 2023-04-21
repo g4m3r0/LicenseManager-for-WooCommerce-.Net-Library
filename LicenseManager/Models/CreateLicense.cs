@@ -1,9 +1,9 @@
-﻿namespace LicenseManagerClient.Lib.Models
+﻿namespace LicenseManager.Lib.Models
 {
     using System;
     using System.Text.Json.Serialization;
-    using global::LicenseManagerClient.Lib.Enums;
-    using global::LicenseManagerClient.Lib.JsonConverter;
+    using global::LicenseManager.Lib.Enums;
+    using global::LicenseManager.Lib.JsonConverter;
 
     /// <summary>
     /// Represents a license object containing information about a specific license.

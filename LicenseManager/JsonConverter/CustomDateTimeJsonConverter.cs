@@ -1,4 +1,4 @@
-﻿namespace LicenseManagerClient.Lib.JsonConverter
+﻿namespace LicenseManager.Lib.JsonConverter
 {
     using System;
     using System.Globalization;

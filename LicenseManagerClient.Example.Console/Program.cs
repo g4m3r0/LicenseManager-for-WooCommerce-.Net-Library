@@ -1,11 +1,11 @@
-﻿namespace LicenseManagerClient.Example.Console;
+﻿namespace LicenseManager.Example.Console;
 
 using System;
 using System.Globalization;
 using System.Reflection;
-using LicenseManagerClient.Lib;
-using LicenseManagerClient.Lib.Enums;
-using LicenseManagerClient.Lib.Models;
+using LicenseManager.Lib;
+using LicenseManager.Lib.Enums;
+using LicenseManager.Lib.Models;
 
 internal class Program
 {

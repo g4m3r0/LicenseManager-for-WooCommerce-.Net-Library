@@ -1,4 +1,4 @@
-﻿namespace LicenseManagerClient.Lib
+﻿namespace LicenseManager.Lib
 {
     using System;
     using System.Globalization;
@@ -8,9 +8,9 @@
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using global::LicenseManagerClient.Lib.JsonConverter;
-    using global::LicenseManagerClient.Lib.Models;
-    using License = global::LicenseManagerClient.Lib.Models.License;
+    using LicenseManager.Lib.JsonConverter;
+    using LicenseManager.Lib.Models;
+    using License = LicenseManager.Lib.Models.License;
 
     /// <summary>
     /// Represents a client for communicating with a License Manager API.
@@ -52,14 +52,6 @@
             // Add a custom JSON converter to handle the date format returned by the API.
             this.jsonSerializerOptions = new JsonSerializerOptions();
             this.jsonSerializerOptions.Converters.Add(new CustomDateTimeJsonConverter());
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="LicenseManagerClient"/> class.
-        /// </summary>
-        ~LicenseManagerClient()
-        {
-            this.Dispose(false);
         }
 
         /// <summary>

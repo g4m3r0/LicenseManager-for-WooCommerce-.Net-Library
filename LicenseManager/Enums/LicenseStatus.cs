@@ -1,4 +1,4 @@
-﻿namespace LicenseManagerClient.Lib.Enums
+﻿namespace LicenseManager.Lib.Enums
 {
     /// <summary>
     /// Represents the status of a license.

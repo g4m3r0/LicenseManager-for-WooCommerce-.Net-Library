@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManagerClient.Lib", "LicenseManager\LicenseManagerClient.Lib.csproj", "{6E01BC87-BB57-4080-A070-9EC12B456A5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManager.Lib", "LicenseManager\LicenseManager.Lib.csproj", "{6E01BC87-BB57-4080-A070-9EC12B456A5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManagerClient.Example.Console", "LicenseManagerClient.Example.Console\LicenseManagerClient.Example.Console.csproj", "{D16D2B6B-E75D-46E7-BBEB-323ECEC29716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManager.Example.Console", "LicenseManagerClient.Example.Console\LicenseManager.Example.Console.csproj", "{D16D2B6B-E75D-46E7-BBEB-323ECEC29716}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C44C183-2696-495D-BC73-750312D0497E}"
 	ProjectSection(SolutionItems) = preProject

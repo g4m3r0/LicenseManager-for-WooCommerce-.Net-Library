@@ -1,8 +1,8 @@
-﻿namespace LicenseManagerClient.Lib.Models
+﻿namespace LicenseManager.Lib.Models
 {
     using System;
     using System.Text.Json.Serialization;
-    using global::LicenseManagerClient.Lib.Enums;
+    using global::LicenseManager.Lib.Enums;
 
     /// <summary>
     /// Represents a request to generate licenses using a specific generator configuration.
