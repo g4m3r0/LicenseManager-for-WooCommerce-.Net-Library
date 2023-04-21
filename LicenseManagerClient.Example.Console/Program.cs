@@ -1,6 +1,7 @@
 ﻿namespace LicenseManagerClient.Example.Console;
 
 using System;
+using System.Globalization;
 using System.Reflection;
 using LicenseManagerClient.Lib;
 using LicenseManagerClient.Lib.Enums;
@@ -22,55 +23,75 @@ internal class Program
         var consumerKey = "ck_a0625b314db9ab7f44d4c29ac93aab416aa8ef8e";
         var consumerSecret = "cs_37abbda659e5932b286546890322d2fd55e9e298";
 
+        // The woocommerce product id
+        var productId = 11;
+
+        // Set the culture (language) of the checking messages
+        var cultureInfo = new CultureInfo("en");
+        //var cultureInfo = new CultureInfo("de");
+        //var cultureInfo = new CultureInfo("es");
+        //var cultureInfo = new CultureInfo("fr");
+        //var cultureInfo = new CultureInfo("ru");
+        //var cultureInfo = new CultureInfo("zh");
+
         Console.WriteLine("Setup the client...");
-        var client = new LicenseManagerClient(baseUrl, consumerKey, consumerSecret);
+        var client = new LicenseManagerClient(baseUrl, consumerKey, consumerSecret, productId, cultureInfo);
 
         var licenseKey = "C124A123C412";
 
+
+        // Activate and check a license
+        // Checks if the license is valid for the current product
+        ActivateAndCheckLicense(client, licenseKey);
+
+        // Validate and check a license
+        // Checks if the license is valid for the current product
+        ValidateAndCheckLicense(client, licenseKey);
+
         // List all licenses
-        //ListAllLicenses(client);
+        ListAllLicenses(client);
 
         // Retrieve a license
-        //RetrieveSingleLicense(client, licenseKey);
+        RetrieveSingleLicense(client, licenseKey);
 
         // Create a license
-        //CreateSingleLicense(client);
+        CreateSingleLicense(client);
 
         // Update a license
-        //UpdateLicense(client, licenseKey);
+        UpdateLicense(client, licenseKey);
 
         // Activate a license
-        //ActivateLicense(client, licenseKey);
+        ActivateLicense(client, licenseKey);
 
         // Deactivate a license
-        //DeactivateLicense(client, licenseKey);
+        DeactivateLicense(client, licenseKey);
 
         // Validate a license
-        //ValidateLicense(client, licenseKey);
+        ValidateLicense(client, licenseKey);
 
         // List all generators
-        //ListGenerators(client);
+        ListGenerators(client);
 
         // Retrieve specific generator
-        //RetrieveSingleGenerator(client, 1);
+        RetrieveSingleGenerator(client, 1);
 
         // Create a generator
-        //CreateSingleGenerator(client);
+        CreateSingleGenerator(client);
 
         // Update a generator
-        //UpdateGenerator(client, 1);
+        UpdateGenerator(client, 1);
 
         // Generate generator
-        //GeneratorGenerate(client, 1);
+        GeneratorGenerate(client, 1);
 
         // VALIDATE CUSTOMER LICENSES
-        //ValidateCustomerLicense(client, 1);
+        ValidateCustomerLicense(client, 1);
 
         // Products/ping
-        //ProductsPing(client);
+        ProductsPing(client);
 
         // Products/update
-        //ProductsUpdate(client, licenseKey);
+        ProductsUpdate(client, licenseKey);
     }
 
     public static void ListAllLicenses(LicenseManagerClient client)
@@ -154,6 +175,19 @@ internal class Program
         OutputObjectProperties(activateLicenseResponse.Data);
     }
 
+    public static void ActivateAndCheckLicense(LicenseManagerClient client, string licenseKey)
+    {
+        Console.WriteLine("Activate a license:");
+        var activateLicenseResponse = client.ActivateLicense(licenseKey).Result;
+
+        Console.WriteLine($"Success: {activateLicenseResponse.Success}");
+        OutputObjectProperties(activateLicenseResponse.Data);
+
+        Console.WriteLine("Check response:");
+        var checkResponse = client.CheckLicenseActivation(activateLicenseResponse, licenseKey);
+        OutputObjectProperties(checkResponse);
+    }
+
     public static void DeactivateLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Deactivate a license:");
@@ -172,6 +206,19 @@ internal class Program
 
         Console.WriteLine($"Success: {licenseResponse.Success}");
         OutputObjectProperties(licenseResponse.Data);
+    }
+
+    public static void ValidateAndCheckLicense(LicenseManagerClient client, string licenseKey)
+    {
+        Console.WriteLine("Validate a license:");
+        var licenseResponse = client.ValidateLicense(licenseKey).Result;
+
+        Console.WriteLine($"Success: {licenseResponse.Success}");
+        OutputObjectProperties(licenseResponse.Data);
+
+        Console.WriteLine("Check response:");
+        var checkResponse = client.CheckLicenseValidation(licenseResponse, licenseKey);
+        OutputObjectProperties(checkResponse);
     }
 
     public static void ListGenerators(LicenseManagerClient client)
