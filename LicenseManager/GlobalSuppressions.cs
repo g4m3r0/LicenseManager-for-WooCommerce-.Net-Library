@@ -5,4 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "<Pending>", Scope = "namespace", Target = "~N:LicenseManagerClient.Lib.Models")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "No need for file headers.", Scope = "namespace", Target = "~N:LicenseManager.Lib")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "No need for file headers.", Scope = "namespace", Target = "~N:LicenseManager.Lib.Models")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "No need for file headers.", Scope = "namespace", Target = "~N:LicenseManager.Lib.JsonConverter")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "No need for file headers.")]

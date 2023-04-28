@@ -1,13 +1,17 @@
 ﻿namespace LicenseManager.Lib
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Globalization;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Resources;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using System.Web;
     using LicenseManager.Lib.JsonConverter;
     using LicenseManager.Lib.Models;
     using License = LicenseManager.Lib.Models.License;
@@ -366,16 +370,34 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> GetAsync<T>(string endpoint)
         {
-            var response = await this.httpClient.GetAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}").ConfigureAwait(false);
-            string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            try
+            {
+                UriBuilder uriBuilder = new UriBuilder($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                var queryParameters = new Dictionary<string, string>
+                {
+                    { "consumer_key", this.consumerKey },
+                    { "consumer_secret", this.consumerSecret }
+                };
+
+                uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
+
+                var response = await this.httpClient.GetAsync(uriBuilder.Uri).ConfigureAwait(false);
+                string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                }
+                else
+                {
+                    // TODO throw custom exception
+                    throw new WebException($"Error: {responseBody}");
+                }
             }
-            else
+            finally
             {
-                throw new WebException($"Error: {responseBody}");
+                this.httpClient.Dispose();
             }
         }
 
@@ -388,17 +410,25 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> PostAsync<T>(string endpoint, object data)
         {
-            var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
-            var response = await this.httpClient.PostAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
-            string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            try
+            {
+                var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
+                var response = await this.httpClient.PostAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
+                string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                }
+                else
+                {
+                    // TODO throw custom exception
+                    throw new WebException($"Error: {responseBody}");
+                }
             }
-            else
+            finally
             {
-                throw new WebException($"Error: {responseBody}");
+                this.httpClient.Dispose();
             }
         }
 
@@ -411,17 +441,25 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> PutAsync<T>(string endpoint, object data)
         {
-            var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
-            var response = await this.httpClient.PutAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
-            string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            try
+            {
+                var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
+                var response = await this.httpClient.PutAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
+                string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                }
+                else
+                {
+                    // TODO throw custom exception
+                    throw new WebException($"Error: {responseBody}");
+                }
             }
-            else
+            finally
             {
-                throw new WebException($"Error: {responseBody}");
+                this.httpClient.Dispose();
             }
         }
     }
