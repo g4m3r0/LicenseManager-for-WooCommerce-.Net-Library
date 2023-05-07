@@ -51,7 +51,7 @@
         /// Gets or sets the number of days the license is valid for.
         /// </summary>
         [JsonPropertyName("validFor")]
-        public int ValidFor { get; set; }
+        public int? ValidFor { get; set; }
 
         /// <summary>
         /// Gets or sets the source of the license.
