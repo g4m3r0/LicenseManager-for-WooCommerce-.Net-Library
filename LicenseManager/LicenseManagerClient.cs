@@ -1,17 +1,21 @@
 ﻿namespace LicenseManager.Lib
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Resources;
+    using System.Runtime.ConstrainedExecution;
     using System.Text;
+    using System.Text.Encodings.Web;
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Web;
+    using LicenseManager.Lib.Exceptions;
     using LicenseManager.Lib.JsonConverter;
     using LicenseManager.Lib.Models;
     using License = LicenseManager.Lib.Models.License;
@@ -22,7 +26,7 @@
     public class LicenseManagerClient : IDisposable
     {
         // TODO add configure await false to all async calls
-        private static readonly ResourceManager ResourceManager = new ResourceManager("LicenseManagerClient.Lib.Messages.Messages", typeof(LicenseManagerClient).Assembly);
+        private static readonly ResourceManager ResourceManager = new ResourceManager("LicenseManager.Lib.Messages.Messages", typeof(LicenseManagerClient).Assembly);
 
         private readonly HttpClient httpClient = new HttpClient();
         private readonly string baseUrl;
@@ -64,7 +68,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the list of licenses.</returns>
         public async Task<LicenseResponse> ListLicensesAsync()
         {
-            var licenses = await this.GetAsync<LicenseResponse>("licenses");
+            var licenses = await this.GetAsync<LicenseResponse>("licenses").ConfigureAwait(false);
             return licenses;
         }
 
@@ -75,7 +79,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the license information.</returns>
         public async Task<LicenseKeyResponse> RetrieveLicenseAsync(string licenseKey)
         {
-            var license = await this.GetAsync<LicenseKeyResponse>($"licenses/{licenseKey}");
+            var license = await this.GetAsync<LicenseKeyResponse>($"licenses/{licenseKey}").ConfigureAwait(false);
             return license;
         }
 
@@ -86,7 +90,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the created license information.</returns>
         public async Task<LicenseKeyResponse> CreateLicenseAsync(CreateLicense license)
         {
-            var createdLicense = await this.PostAsync<LicenseKeyResponse>("licenses", license);
+            var createdLicense = await this.PostAsync<LicenseKeyResponse>("licenses", license).ConfigureAwait(false);
             return createdLicense;
         }
 
@@ -98,7 +102,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the updated license information.</returns>
         public async Task<LicenseKeyResponse> UpdateLicenseAsync(CreateLicense license, string licenseKey)
         {
-            var updatedLicense = await this.PutAsync<LicenseKeyResponse>($"licenses/{licenseKey}", license);
+            var updatedLicense = await this.PutAsync<LicenseKeyResponse>($"licenses/{licenseKey}", license).ConfigureAwait(false);
             return updatedLicense;
         }
 
@@ -109,7 +113,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the activation status.</returns>
         public async Task<LicenseKeyResponse> ActivateLicenseAsync(string licenseKey)
         {
-            var activation = await this.GetAsync<LicenseKeyResponse>($"licenses/activate/{licenseKey}");
+            var activation = await this.GetAsync<LicenseKeyResponse>($"licenses/activate/{licenseKey}").ConfigureAwait(false);
             return activation;
         }
 
@@ -118,7 +122,7 @@
         /// </summary>
         /// <param name="license">The license to activate.</param>
         /// <returns>A task that represents the asynchronous operation, containing the activation status.</returns>
-        public async Task<LicenseKeyResponse> ActivateLicenseAsync(License license) => await this.ActivateLicenseAsync(license.LicenseKey);
+        public async Task<LicenseKeyResponse> ActivateLicenseAsync(License license) => await this.ActivateLicenseAsync(license.LicenseKey).ConfigureAwait(false);
 
         /// <summary>
         /// Deactivates a license by its key.
@@ -127,7 +131,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the deactivation status.</returns>
         public async Task<LicenseKeyResponse> DeactivateLicenseAsync(string licenseKey)
         {
-            var deactivation = await this.GetAsync<LicenseKeyResponse>($"licenses/deactivate/{licenseKey}");
+            var deactivation = await this.GetAsync<LicenseKeyResponse>($"licenses/deactivate/{licenseKey}").ConfigureAwait(false);
             return deactivation;
         }
 
@@ -136,7 +140,7 @@
         /// </summary>
         /// <param name="license">The license to deactivate.</param>
         /// <returns>A task that represents the asynchronous operation, containing the deactivation status.</returns>
-        public async Task<LicenseKeyResponse> DeactivateLicenseAsync(License license) => await this.DeactivateLicenseAsync(license.LicenseKey);
+        public async Task<LicenseKeyResponse> DeactivateLicenseAsync(License license) => await this.DeactivateLicenseAsync(license.LicenseKey).ConfigureAwait(false);
 
         /// <summary>
         /// Validates a license by its key.
@@ -145,7 +149,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the validation response.</returns>
         public async Task<LicenseValidationResponse> ValidateLicenseAsync(string licenseKey)
         {
-            var validation = await this.GetAsync<LicenseValidationResponse>($"licenses/validate/{licenseKey}");
+            var validation = await this.GetAsync<LicenseValidationResponse>($"licenses/validate/{licenseKey}").ConfigureAwait(false);
             return validation;
         }
 
@@ -154,7 +158,7 @@
         /// </summary>
         /// <param name="license">The license to validate.</param>
         /// <returns>A task that represents the asynchronous operation, containing the validation response.</returns>
-        public async Task<LicenseValidationResponse> ValidateLicenseAsync(License license) => await this.ValidateLicenseAsync(license.LicenseKey);
+        public async Task<LicenseValidationResponse> ValidateLicenseAsync(License license) => await this.ValidateLicenseAsync(license.LicenseKey).ConfigureAwait(false);
 
         /// <summary>
         /// Lists all generators.
@@ -162,7 +166,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the list of generators.</returns>
         public async Task<GeneratorsResponse> ListGeneratorsAsync()
         {
-            var generators = await this.GetAsync<GeneratorsResponse>("generators");
+            var generators = await this.GetAsync<GeneratorsResponse>("generators").ConfigureAwait(false);
             return generators;
         }
 
@@ -173,7 +177,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the generator information.</returns>
         public async Task<GeneratorResponse> RetrieveGeneratorAsync(int generatorId)
         {
-            var generator = await this.GetAsync<GeneratorResponse>($"generators/{generatorId}");
+            var generator = await this.GetAsync<GeneratorResponse>($"generators/{generatorId}").ConfigureAwait(false);
             return generator;
         }
 
@@ -184,7 +188,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the created generator information.</returns>
         public async Task<GeneratorResponse> CreateGeneratorAsync(CreateGenerator generator)
         {
-            var createdGenerator = await this.PostAsync<GeneratorResponse>("generators", generator);
+            var createdGenerator = await this.PostAsync<GeneratorResponse>("generators", generator).ConfigureAwait(false);
             return createdGenerator;
         }
 
@@ -196,7 +200,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the updated generator information.</returns>
         public async Task<GeneratorResponse> UpdateGeneratorAsync(CreateGenerator generator, int generatorId)
         {
-            var updatedGenerator = await this.PutAsync<GeneratorResponse>($"generators/{generatorId}", generator);
+            var updatedGenerator = await this.PutAsync<GeneratorResponse>($"generators/{generatorId}", generator).ConfigureAwait(false);
             return updatedGenerator;
         }
 
@@ -208,7 +212,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the generated keys.</returns>
         public async Task<GeneratorGenerateResponse> GenerateGeneratorAsync(GeneratorGenerate generate, int generatorId)
         {
-            var generatedKeys = await this.PostAsync<GeneratorGenerateResponse>($"generators/{generatorId}/generate", generate);
+            var generatedKeys = await this.PostAsync<GeneratorGenerateResponse>($"generators/{generatorId}/generate", generate).ConfigureAwait(false);
             return generatedKeys;
         }
 
@@ -219,7 +223,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the list of customer licenses.</returns>
         public async Task<LicenseResponse> ValidateCustomerLicensesAsync(int customerId)
         {
-            var customerLicenses = await this.GetAsync<LicenseResponse>($"customers/{customerId}/licenses");
+            var customerLicenses = await this.GetAsync<LicenseResponse>($"customers/{customerId}/licenses").ConfigureAwait(false);
             return customerLicenses;
         }
 
@@ -230,7 +234,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the ping response.</returns>
         public async Task<PingResponse> ProductsPingAsync(PingRequest pingRequest)
         {
-            var pingResponse = await this.PostAsync<PingResponse>("products/ping", pingRequest);
+            var pingResponse = await this.PostAsync<PingResponse>("products/ping", pingRequest).ConfigureAwait(false);
             return pingResponse;
         }
 
@@ -241,7 +245,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the product update response.</returns>
         public async Task<ProductUpdateResponse> ProductsUpdateAsync(string licenseKey)
         {
-            var productUpdate = await this.GetAsync<ProductUpdateResponse>($"products/update/{licenseKey}");
+            var productUpdate = await this.GetAsync<ProductUpdateResponse>($"products/update/{licenseKey}").ConfigureAwait(false);
             return productUpdate;
         }
 
@@ -370,6 +374,8 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> GetAsync<T>(string endpoint)
         {
+            HttpResponseMessage response = null;
+
             try
             {
                 UriBuilder uriBuilder = new UriBuilder($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}");
@@ -377,12 +383,12 @@
                 var queryParameters = new Dictionary<string, string>
                 {
                     { "consumer_key", this.consumerKey },
-                    { "consumer_secret", this.consumerSecret }
+                    { "consumer_secret", this.consumerSecret },
                 };
 
                 uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
 
-                var response = await this.httpClient.GetAsync(uriBuilder.Uri).ConfigureAwait(false);
+                response = await this.httpClient.GetAsync(uriBuilder.Uri).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -391,13 +397,18 @@
                 }
                 else
                 {
-                    // TODO throw custom exception
-                    throw new WebException($"Error: {responseBody}");
+                    var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody, this.jsonSerializerOptions);
+                    throw new LicenseManagerException($"{errorResponse.Message}");
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException($"{ex.Message}");
             }
             finally
             {
-                this.httpClient.Dispose();
+                response.Dispose();
             }
         }
 
@@ -410,10 +421,22 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> PostAsync<T>(string endpoint, object data)
         {
+            HttpResponseMessage response = null;
+
             try
             {
+                UriBuilder uriBuilder = new UriBuilder($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}");
+
+                var queryParameters = new Dictionary<string, string>
+                {
+                    { "consumer_key", this.consumerKey },
+                    { "consumer_secret", this.consumerSecret },
+                };
+
+                uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
+
                 var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
-                var response = await this.httpClient.PostAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
+                response = await this.httpClient.PostAsync(uriBuilder.Uri, content).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -422,13 +445,18 @@
                 }
                 else
                 {
-                    // TODO throw custom exception
-                    throw new WebException($"Error: {responseBody}");
+                    var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody, this.jsonSerializerOptions);
+                    throw new LicenseManagerException($"{errorResponse.Message}");
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException($"{ex.Message}");
             }
             finally
             {
-                this.httpClient.Dispose();
+                response.Dispose();
             }
         }
 
@@ -441,10 +469,22 @@
         /// <returns>A task that represents the asynchronous operation, containing the deserialized response.</returns>
         private async Task<T> PutAsync<T>(string endpoint, object data)
         {
+            HttpResponseMessage response = null;
+
             try
             {
+                UriBuilder uriBuilder = new UriBuilder($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}");
+
+                var queryParameters = new Dictionary<string, string>
+                {
+                    { "consumer_key", this.consumerKey },
+                    { "consumer_secret", this.consumerSecret },
+                };
+
+                uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
+
                 var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
-                var response = await this.httpClient.PutAsync($"{this.baseUrl}/wp-json/lmfwc/v2/{endpoint}?consumer_key={this.consumerKey}&consumer_secret={this.consumerSecret}", content).ConfigureAwait(false);
+                response = await this.httpClient.PutAsync(uriBuilder.Uri, content).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -453,13 +493,18 @@
                 }
                 else
                 {
-                    // TODO throw custom exception
-                    throw new WebException($"Error: {responseBody}");
+                    var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody, this.jsonSerializerOptions);
+                    throw new LicenseManagerException($"{errorResponse.Message}");
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException($"{ex.Message}");
             }
             finally
             {
-                this.httpClient.Dispose();
+                response.Dispose();
             }
         }
     }
