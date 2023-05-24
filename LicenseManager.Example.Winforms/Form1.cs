@@ -36,10 +36,15 @@ namespace LicenseManager.Example.Winforms
             {
                 this.LicenseManager = new LicenseManagerClient(this.textBoxHost.Text, this.textBoxConsumerKey.Text, this.textBoxConsumerSecret.Text, Convert.ToInt32(this.textBoxProductId.Text), cultureInfo);
 
+                this.buttonCreateLicense.Enabled = true;
                 this.buttonActivateLicense.Enabled = true;
                 this.buttonDeActivateLicense.Enabled = true;
                 this.buttonValidateLicense.Enabled = true;
                 this.buttonListLicenses.Enabled = true;
+                this.buttonListGenerators.Enabled = true;
+                this.buttonCreateGenerator.Enabled = true;
+                this.buttonUpdateGenerator.Enabled = true;
+                this.buttonGenerateLicense.Enabled = true;
 
                 MessageBox.Show("Success");
             }
@@ -170,6 +175,38 @@ namespace LicenseManager.Example.Winforms
                 MessageBox.Show(ex.Message);
                 this.propertyGrid1.SelectedObject = ex;
             }
+        }
+
+        private async void buttonListGenerators_Click(object sender, EventArgs e)
+        {
+            this.ClearPropertyGrid();
+
+            var allGenaratorsResponse = await this.LicenseManager.ListGeneratorsAsync().ConfigureAwait(true);
+            this.propertyGrid1.SelectedObject = allGenaratorsResponse;
+        }
+
+        private async void buttonCreateGenerator_Click(object sender, EventArgs e)
+        {
+            this.ClearPropertyGrid();
+            MessageBox.Show("Not implemented yet (see console example).");
+        }
+
+        private async void buttonUpdateGenerator_Click(object sender, EventArgs e)
+        {
+            this.ClearPropertyGrid();
+            MessageBox.Show("Not implemented yet (see console example).");
+        }
+
+        private async void buttonGenerateLicense_Click(object sender, EventArgs e)
+        {
+            this.ClearPropertyGrid();
+            MessageBox.Show("Not implemented yet (see console example).");
+        }
+
+        private async void buttonCreateLicense_Click(object sender, EventArgs e)
+        {
+            this.ClearPropertyGrid();
+            MessageBox.Show("Not implemented yet (see console example).");
         }
     }
 }

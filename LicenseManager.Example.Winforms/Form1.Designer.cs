@@ -44,6 +44,11 @@
             buttonValidateLicense = new Button();
             buttonSetupLicenseClient = new Button();
             buttonListLicenses = new Button();
+            buttonCreateLicense = new Button();
+            buttonListGenerators = new Button();
+            buttonCreateGenerator = new Button();
+            buttonUpdateGenerator = new Button();
+            buttonGenerateLicense = new Button();
             SuspendLayout();
             // 
             // propertyGrid1
@@ -51,7 +56,7 @@
             propertyGrid1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             propertyGrid1.Location = new Point(427, 12);
             propertyGrid1.Name = "propertyGrid1";
-            propertyGrid1.Size = new Size(361, 426);
+            propertyGrid1.Size = new Size(361, 405);
             propertyGrid1.TabIndex = 0;
             // 
             // textBoxHost
@@ -142,9 +147,9 @@
             // buttonActivateLicense
             // 
             buttonActivateLicense.Enabled = false;
-            buttonActivateLicense.Location = new Point(142, 167);
+            buttonActivateLicense.Location = new Point(142, 196);
             buttonActivateLicense.Name = "buttonActivateLicense";
-            buttonActivateLicense.Size = new Size(155, 23);
+            buttonActivateLicense.Size = new Size(168, 23);
             buttonActivateLicense.TabIndex = 11;
             buttonActivateLicense.Text = "Activate License";
             buttonActivateLicense.UseVisualStyleBackColor = true;
@@ -153,9 +158,9 @@
             // buttonDeActivateLicense
             // 
             buttonDeActivateLicense.Enabled = false;
-            buttonDeActivateLicense.Location = new Point(142, 196);
+            buttonDeActivateLicense.Location = new Point(142, 225);
             buttonDeActivateLicense.Name = "buttonDeActivateLicense";
-            buttonDeActivateLicense.Size = new Size(155, 23);
+            buttonDeActivateLicense.Size = new Size(168, 23);
             buttonDeActivateLicense.TabIndex = 12;
             buttonDeActivateLicense.Text = "De-Activate License";
             buttonDeActivateLicense.UseVisualStyleBackColor = true;
@@ -164,9 +169,9 @@
             // buttonValidateLicense
             // 
             buttonValidateLicense.Enabled = false;
-            buttonValidateLicense.Location = new Point(142, 225);
+            buttonValidateLicense.Location = new Point(142, 254);
             buttonValidateLicense.Name = "buttonValidateLicense";
-            buttonValidateLicense.Size = new Size(155, 23);
+            buttonValidateLicense.Size = new Size(168, 23);
             buttonValidateLicense.TabIndex = 13;
             buttonValidateLicense.Text = "Validate License";
             buttonValidateLicense.UseVisualStyleBackColor = true;
@@ -176,7 +181,7 @@
             // 
             buttonSetupLicenseClient.Location = new Point(12, 167);
             buttonSetupLicenseClient.Name = "buttonSetupLicenseClient";
-            buttonSetupLicenseClient.Size = new Size(124, 81);
+            buttonSetupLicenseClient.Size = new Size(124, 255);
             buttonSetupLicenseClient.TabIndex = 14;
             buttonSetupLicenseClient.Text = "Setup License Client";
             buttonSetupLicenseClient.UseVisualStyleBackColor = true;
@@ -185,19 +190,79 @@
             // buttonListLicenses
             // 
             buttonListLicenses.Enabled = false;
-            buttonListLicenses.Location = new Point(142, 254);
+            buttonListLicenses.Location = new Point(142, 283);
             buttonListLicenses.Name = "buttonListLicenses";
-            buttonListLicenses.Size = new Size(155, 23);
+            buttonListLicenses.Size = new Size(168, 23);
             buttonListLicenses.TabIndex = 15;
             buttonListLicenses.Text = "List License";
             buttonListLicenses.UseVisualStyleBackColor = true;
             buttonListLicenses.Click += buttonListLicenses_Click;
             // 
+            // buttonCreateLicense
+            // 
+            buttonCreateLicense.Enabled = false;
+            buttonCreateLicense.Location = new Point(142, 167);
+            buttonCreateLicense.Name = "buttonCreateLicense";
+            buttonCreateLicense.Size = new Size(168, 23);
+            buttonCreateLicense.TabIndex = 16;
+            buttonCreateLicense.Text = "Create License";
+            buttonCreateLicense.UseVisualStyleBackColor = true;
+            buttonCreateLicense.Click += buttonCreateLicense_Click;
+            // 
+            // buttonListGenerators
+            // 
+            buttonListGenerators.Enabled = false;
+            buttonListGenerators.Location = new Point(142, 312);
+            buttonListGenerators.Name = "buttonListGenerators";
+            buttonListGenerators.Size = new Size(168, 23);
+            buttonListGenerators.TabIndex = 17;
+            buttonListGenerators.Text = "List Generators";
+            buttonListGenerators.UseVisualStyleBackColor = true;
+            buttonListGenerators.Click += buttonListGenerators_Click;
+            // 
+            // buttonCreateGenerator
+            // 
+            buttonCreateGenerator.Enabled = false;
+            buttonCreateGenerator.Location = new Point(142, 341);
+            buttonCreateGenerator.Name = "buttonCreateGenerator";
+            buttonCreateGenerator.Size = new Size(168, 23);
+            buttonCreateGenerator.TabIndex = 18;
+            buttonCreateGenerator.Text = "Create Generator";
+            buttonCreateGenerator.UseVisualStyleBackColor = true;
+            buttonCreateGenerator.Click += buttonCreateGenerator_Click;
+            // 
+            // buttonUpdateGenerator
+            // 
+            buttonUpdateGenerator.Enabled = false;
+            buttonUpdateGenerator.Location = new Point(142, 370);
+            buttonUpdateGenerator.Name = "buttonUpdateGenerator";
+            buttonUpdateGenerator.Size = new Size(168, 23);
+            buttonUpdateGenerator.TabIndex = 19;
+            buttonUpdateGenerator.Text = "Update Generator";
+            buttonUpdateGenerator.UseVisualStyleBackColor = true;
+            buttonUpdateGenerator.Click += buttonUpdateGenerator_Click;
+            // 
+            // buttonGenerateLicense
+            // 
+            buttonGenerateLicense.Enabled = false;
+            buttonGenerateLicense.Location = new Point(142, 399);
+            buttonGenerateLicense.Name = "buttonGenerateLicense";
+            buttonGenerateLicense.Size = new Size(168, 23);
+            buttonGenerateLicense.TabIndex = 20;
+            buttonGenerateLicense.Text = "Generate License";
+            buttonGenerateLicense.UseVisualStyleBackColor = true;
+            buttonGenerateLicense.Click += buttonGenerateLicense_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 429);
+            Controls.Add(buttonGenerateLicense);
+            Controls.Add(buttonUpdateGenerator);
+            Controls.Add(buttonCreateGenerator);
+            Controls.Add(buttonListGenerators);
+            Controls.Add(buttonCreateLicense);
             Controls.Add(buttonListLicenses);
             Controls.Add(buttonSetupLicenseClient);
             Controls.Add(buttonValidateLicense);
@@ -238,5 +303,10 @@
         private Button buttonValidateLicense;
         private Button buttonSetupLicenseClient;
         private Button buttonListLicenses;
+        private Button buttonCreateLicense;
+        private Button buttonListGenerators;
+        private Button buttonCreateGenerator;
+        private Button buttonUpdateGenerator;
+        private Button buttonGenerateLicense;
     }
 }
