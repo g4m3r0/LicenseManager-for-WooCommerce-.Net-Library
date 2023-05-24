@@ -5,23 +5,25 @@ using System.Globalization;
 using System.Reflection;
 using LicenseManager.Lib;
 using LicenseManager.Lib.Enums;
+using LicenseManager.Lib.Exceptions;
 using LicenseManager.Lib.Models;
 
 internal class Program
 {
-    private static void Main()
+    private static async Task Main()
     {
         Console.WriteLine("LicenseManagerClient Hello World!");
 
-        var baseUrl = "https://licensemanager.codelu.eu";
+        // Wocommerce Shop Url
+        var baseUrl = "https://licensemanager.codelu.eu/";
 
         // Read Only
-        //var consumerKey = "ck_252ce48bf36f3aacee112e3922fc90abf88efd38";
-        //var consumerSecret = "cs_0474a2f6605b8bcb2ec3a3c9d8d934b3fed24325";
+        var consumerKey = "ck_252ce48bf36f3aacee112e3922fc90abf88efd38";
+        var consumerSecret = "cs_0474a2f6605b8bcb2ec3a3c9d8d934b3fed24325";
 
         //Read + Write
-        var consumerKey = "ck_a0625b314db9ab7f44d4c29ac93aab416aa8ef8e";
-        var consumerSecret = "cs_37abbda659e5932b286546890322d2fd55e9e298";
+        //var consumerKey = "ck_a0625b314db9ab7f44d4c29ac93aab416aa8ef8e";
+        //var consumerSecret = "cs_37abbda659e5932b286546890322d2fd55e9e298";
 
         // The woocommerce product id
         var productId = 11;
@@ -36,62 +38,73 @@ internal class Program
 
         Console.WriteLine("Setup the client...");
         var client = new LicenseManagerClient(baseUrl, consumerKey, consumerSecret, productId, cultureInfo);
-
         var licenseKey = "C124A123C412";
 
+        try
+        {
 
-        // Activate and check a license
-        // Checks if the license is valid for the current product
-        ActivateAndCheckLicense(client, licenseKey);
+            // Activate and check a license
+            // Checks if the license is valid for the current product
+            await ActivateAndCheckLicense(client, licenseKey);
 
-        // Validate and check a license
-        // Checks if the license is valid for the current product
-        ValidateAndCheckLicense(client, licenseKey);
+            // Validate and check a license
+            // Checks if the license is valid for the current product
+            ValidateAndCheckLicense(client, licenseKey);
 
-        // List all licenses
-        ListAllLicenses(client);
+            // List all licenses
+            ListAllLicenses(client);
 
-        // Retrieve a license
-        RetrieveSingleLicense(client, licenseKey);
+            // Retrieve a license
+            RetrieveSingleLicense(client, licenseKey);
 
-        // Create a license
-        CreateSingleLicense(client);
+            // Create a license
+            CreateSingleLicense(client);
 
-        // Update a license
-        UpdateLicense(client, licenseKey);
+            // Update a license
+            UpdateLicense(client, licenseKey);
 
-        // Activate a license
-        ActivateLicense(client, licenseKey);
+            // Activate a license
+            ActivateLicense(client, licenseKey);
 
-        // Deactivate a license
-        DeactivateLicense(client, licenseKey);
+            // Deactivate a license
+            DeactivateLicense(client, licenseKey);
 
-        // Validate a license
-        ValidateLicense(client, licenseKey);
+            // Validate a license
+            ValidateLicense(client, licenseKey);
 
-        // List all generators
-        ListGenerators(client);
+            // List all generators
+            ListGenerators(client);
 
-        // Retrieve specific generator
-        RetrieveSingleGenerator(client, 1);
+            // Retrieve specific generator
+            RetrieveSingleGenerator(client, 1);
 
-        // Create a generator
-        CreateSingleGenerator(client);
+            // Create a generator
+            CreateSingleGenerator(client);
 
-        // Update a generator
-        UpdateGenerator(client, 1);
+            // Update a generator
+            UpdateGenerator(client, 1);
 
-        // Generate generator
-        GeneratorGenerate(client, 1);
+            // Generate generator
+            GeneratorGenerate(client, 1);
 
-        // VALIDATE CUSTOMER LICENSES
-        ValidateCustomerLicense(client, 1);
+            // VALIDATE CUSTOMER LICENSES
+            ValidateCustomerLicense(client, 1);
 
-        // Products/ping
-        ProductsPing(client);
+            // Products/ping
+            ProductsPing(client);
 
-        // Products/update
-        ProductsUpdate(client, licenseKey);
+            // Products/update
+            ProductsUpdate(client, licenseKey);
+
+        }
+        catch (LicenseManagerException lex)
+        {
+            Console.WriteLine($"License Error: {lex.ToString}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fatal Error: {ex.ToString}");
+        }
     }
 
     public static void ListAllLicenses(LicenseManagerClient client)
@@ -175,17 +188,27 @@ internal class Program
         OutputObjectProperties(activateLicenseResponse.Data);
     }
 
-    public static void ActivateAndCheckLicense(LicenseManagerClient client, string licenseKey)
+    public static async Task ActivateAndCheckLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Activate a license:");
-        var activateLicenseResponse = client.ActivateLicenseAsync(licenseKey).Result;
+        LicenseKeyResponse? activateLicenseResponse;
 
-        Console.WriteLine($"Success: {activateLicenseResponse.Success}");
-        OutputObjectProperties(activateLicenseResponse.Data);
+        try
+        {
+            activateLicenseResponse = await client.ActivateLicenseAsync(licenseKey);
 
-        Console.WriteLine("Check response:");
-        var checkResponse = client.CheckLicenseActivation(activateLicenseResponse, licenseKey);
-        OutputObjectProperties(checkResponse);
+            Console.WriteLine($"Success: {activateLicenseResponse.Success}");
+            OutputObjectProperties(activateLicenseResponse.Data);
+
+            Console.WriteLine("Check response:");
+            var checkResponse = client.CheckLicenseActivation(activateLicenseResponse, licenseKey);
+            OutputObjectProperties(checkResponse);
+        }
+        catch (LicenseManagerException ex)
+        {
+            Console.WriteLine($"Success: false");
+            Console.WriteLine($"{ex.Message}");
+        }
     }
 
     public static void DeactivateLicense(LicenseManagerClient client, string licenseKey)
@@ -211,14 +234,24 @@ internal class Program
     public static void ValidateAndCheckLicense(LicenseManagerClient client, string licenseKey)
     {
         Console.WriteLine("Validate a license:");
-        var licenseResponse = client.ValidateLicenseAsync(licenseKey).Result;
+        LicenseValidationResponse? licenseResponse;
 
-        Console.WriteLine($"Success: {licenseResponse.Success}");
-        OutputObjectProperties(licenseResponse.Data);
+        try
+        {
+            licenseResponse = client.ValidateLicenseAsync(licenseKey).Result;
 
-        Console.WriteLine("Check response:");
-        var checkResponse = client.CheckLicenseValidation(licenseResponse, licenseKey);
-        OutputObjectProperties(checkResponse);
+            Console.WriteLine($"Success: {licenseResponse.Success}");
+            OutputObjectProperties(licenseResponse.Data);
+
+            Console.WriteLine("Check response:");
+            var checkResponse = client.CheckLicenseValidation(licenseResponse, licenseKey);
+            OutputObjectProperties(checkResponse);
+        }
+        catch (LicenseManagerException ex)
+        {
+            Console.WriteLine($"Success: false");
+            Console.WriteLine($"{ex.Message}");
+        }
     }
 
     public static void ListGenerators(LicenseManagerClient client)

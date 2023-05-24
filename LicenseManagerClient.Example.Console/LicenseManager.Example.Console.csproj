@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LicenseManager\LicenseManager.Lib.csproj" />
-    <ProjectReference Include="..\LicenseManager\LicenseManagerClient.Lib.csproj" />
   </ItemGroup>
 
 </Project>
