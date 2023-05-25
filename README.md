@@ -114,7 +114,7 @@ The project also contains a console application project which shows how to use e
 
 ## WinForms Example
 The project also contains a WinForms GUI project which shows and visualizes the basic functionality.
-![WinForms Example](winFormsExample.png)
+![WinForms Example](winformsExample.png)
 
 # Overview
 ## The library includes the following functionality
