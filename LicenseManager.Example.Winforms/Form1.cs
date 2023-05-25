@@ -4,6 +4,8 @@ namespace LicenseManager.Example.Winforms
     using System.Globalization;
     using System.Diagnostics;
     using LicenseManager.Lib.Exceptions;
+    using LicenseManager.Lib.Models;
+    using LicenseManager.Lib.Enums;
 
     public partial class Form1 : Form
     {
@@ -22,6 +24,7 @@ namespace LicenseManager.Example.Winforms
         private void buttonSetupLicenseClient_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
 
             var cultureInfo = new CultureInfo("en");
             //var cultureInfo = new CultureInfo("de");
@@ -45,18 +48,19 @@ namespace LicenseManager.Example.Winforms
                 this.buttonCreateGenerator.Enabled = true;
                 this.buttonUpdateGenerator.Enabled = true;
                 this.buttonGenerateLicense.Enabled = true;
-
-                MessageBox.Show("Success");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonActivateLicense_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             Debug.WriteLine("Activate a license:");
 
             if (this.LicenseManager == null)
@@ -84,11 +88,14 @@ namespace LicenseManager.Example.Winforms
                 MessageBox.Show(ex.Message);
                 this.propertyGrid1.SelectedObject = ex;
             }
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonDeActivateLicense_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             Debug.WriteLine("DeActivate a license");
 
             if (this.LicenseManager == null)
@@ -114,13 +121,15 @@ namespace LicenseManager.Example.Winforms
                 Debug.WriteLine(ex.Message);
 
                 MessageBox.Show(ex.Message);
-
             }
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonValidateLicense_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             Debug.WriteLine("Validate a license");
 
             if (this.LicenseManager == null)
@@ -146,11 +155,14 @@ namespace LicenseManager.Example.Winforms
                 MessageBox.Show(ex.Message);
                 this.propertyGrid1.SelectedObject = ex;
             }
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonListLicenses_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             Debug.WriteLine("List all licenses");
 
             if (this.LicenseManager == null)
@@ -165,7 +177,7 @@ namespace LicenseManager.Example.Winforms
                 var allLicensesResponse = await this.LicenseManager.ListLicensesAsync().ConfigureAwait(true);
 
                 Debug.WriteLine($"Success: {allLicensesResponse.Success}");
-                this.propertyGrid1.SelectedObject = allLicensesResponse.Data;
+                this.propertyGrid1.SelectedObject = allLicensesResponse;
             }
             catch (LicenseManagerException ex)
             {
@@ -175,38 +187,83 @@ namespace LicenseManager.Example.Winforms
                 MessageBox.Show(ex.Message);
                 this.propertyGrid1.SelectedObject = ex;
             }
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonListGenerators_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
 
             var allGenaratorsResponse = await this.LicenseManager.ListGeneratorsAsync().ConfigureAwait(true);
             this.propertyGrid1.SelectedObject = allGenaratorsResponse;
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonCreateGenerator_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             MessageBox.Show("Not implemented yet (see console example).");
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonUpdateGenerator_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             MessageBox.Show("Not implemented yet (see console example).");
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonGenerateLicense_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
+            this.SetMouseBussy(true);
             MessageBox.Show("Not implemented yet (see console example).");
+
+            this.SetMouseBussy(false);
         }
 
         private async void buttonCreateLicense_Click(object sender, EventArgs e)
         {
             this.ClearPropertyGrid();
-            MessageBox.Show("Not implemented yet (see console example).");
+            this.SetMouseBussy(true);
+            Console.WriteLine("Create a license");
+
+            try
+            {
+                var newLicense = new CreateLicense()
+                {
+                    OrderId = 0,
+                    ProductId = Convert.ToInt32(textBoxProductId.Text),
+                    LicenseKey = textBoxLicenseKey.Text,
+                    ExpiresAt = DateTime.Now + TimeSpan.FromDays(7),
+                    Status = LicenseStatus.Active,
+                    TimesActivatedMax = 10,
+                    UserId = 1,
+                };
+
+                var createLicenseResponse = await this.LicenseManager.CreateLicenseAsync(newLicense).ConfigureAwait(true);
+                this.propertyGrid1.SelectedObject = createLicenseResponse.Data;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            this.SetMouseBussy(false);
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SetMouseBussy(bool isBussy) { Cursor.Current = isBussy ? Cursors.WaitCursor : Cursors.Default; }
     }
 }

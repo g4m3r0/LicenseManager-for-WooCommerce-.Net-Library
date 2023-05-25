@@ -281,6 +281,7 @@
             Controls.Add(propertyGrid1);
             Name = "Form1";
             Text = "LicenseManager WinForms Example";
+            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
