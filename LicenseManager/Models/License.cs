@@ -20,7 +20,7 @@
         /// Gets or sets the ID of the order associated with the license.
         /// </summary>
         [JsonPropertyName("orderId")]
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the product associated with the license.
@@ -74,14 +74,14 @@
         /// Gets or sets the maximum number of times the license can be activated.
         /// </summary>
         [JsonPropertyName("timesActivatedMax")]
-        public int TimesActivatedMax { get; set; }
+        public int? TimesActivatedMax { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when the license was created.
         /// </summary>
         [JsonPropertyName("createdAt")]
         [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the user who created the license.
@@ -94,23 +94,26 @@
         /// </summary>
         [JsonPropertyName("updatedAt")]
         [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the user who last updated the license.
         /// </summary>
         [JsonPropertyName("updatedBy")]
-        public int UpdatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
 
+        /// <summary>
+        /// Gets the status of the license in the API format (e.g. active, inactive).
+        /// </summary>
         [JsonPropertyName("status")]
-        private string RawStatus
+        public string RawStatus
         {
             get
             {
-                return this.Status.ToString();
+                return this.Status.ToString().ToLower();
             }
 
-            set
+            private set
             {
                 if (this.RawStatus != value)
                 {
