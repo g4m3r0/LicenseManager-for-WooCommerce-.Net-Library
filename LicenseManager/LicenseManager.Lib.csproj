@@ -17,6 +17,7 @@
 		<Title>LicenseManager</Title>
 		<AssemblyVersion>2.0.0.0</AssemblyVersion>
 		<FileVersion>2.0.0.0</FileVersion>
+		<PackageId>LicenseManager</PackageId>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
 	  <WarningLevel>1</WarningLevel>
