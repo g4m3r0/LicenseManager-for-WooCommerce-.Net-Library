@@ -100,7 +100,7 @@
         /// <param name="license">The license information to update.</param>
         /// <param name="licenseKey">The license key to update.</param>
         /// <returns>A task that represents the asynchronous operation, containing the updated license information.</returns>
-        public async Task<LicenseKeyResponse> UpdateLicenseAsync(CreateLicense license, string licenseKey)
+        public async Task<LicenseKeyResponse> UpdateLicenseAsync(UpdateLicense license, string licenseKey)
         {
             var updatedLicense = await this.PutAsync<LicenseKeyResponse>($"licenses/{licenseKey}", license).ConfigureAwait(false);
             return updatedLicense;
@@ -401,6 +401,10 @@
                     throw new LicenseManagerException($"{errorResponse.Message}");
                 }
             }
+            catch (LicenseManagerException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
@@ -434,7 +438,6 @@
                 };
 
                 uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
-
                 var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
                 response = await this.httpClient.PostAsync(uriBuilder.Uri, content).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -448,6 +451,10 @@
                     var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody, this.jsonSerializerOptions);
                     throw new LicenseManagerException($"{errorResponse.Message}");
                 }
+            }
+            catch (LicenseManagerException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -482,7 +489,6 @@
                 };
 
                 uriBuilder.Query = string.Join("&", queryParameters.Select(kvp => $"{WebUtility.UrlEncode(kvp.Key)}={WebUtility.UrlEncode(kvp.Value)}"));
-
                 var content = new StringContent(JsonSerializer.Serialize(data, this.jsonSerializerOptions), Encoding.UTF8, "application/json");
                 response = await this.httpClient.PutAsync(uriBuilder.Uri, content).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -496,6 +502,10 @@
                     var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody, this.jsonSerializerOptions);
                     throw new LicenseManagerException($"{errorResponse.Message}");
                 }
+            }
+            catch (LicenseManagerException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
