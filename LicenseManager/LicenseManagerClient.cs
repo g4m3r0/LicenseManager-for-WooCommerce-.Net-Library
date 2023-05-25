@@ -25,7 +25,6 @@
     /// </summary>
     public class LicenseManagerClient : IDisposable
     {
-        // TODO add configure await false to all async calls
         private static readonly ResourceManager ResourceManager = new ResourceManager("LicenseManager.Lib.Messages.Messages", typeof(LicenseManagerClient).Assembly);
 
         private readonly HttpClient httpClient = new HttpClient();
