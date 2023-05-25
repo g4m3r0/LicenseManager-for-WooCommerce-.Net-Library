@@ -18,12 +18,12 @@ internal class Program
         var baseUrl = "https://licensemanager.codelu.eu/";
 
         // Read Only
-        var consumerKey = "ck_252ce48bf36f3aacee112e3922fc90abf88efd38";
-        var consumerSecret = "cs_0474a2f6605b8bcb2ec3a3c9d8d934b3fed24325";
+        //var consumerKey = "ck_252ce48bf36f3aacee112e3922fc90abf88efd38";
+        //var consumerSecret = "cs_0474a2f6605b8bcb2ec3a3c9d8d934b3fed24325";
 
         //Read + Write
-        //var consumerKey = "ck_a0625b314db9ab7f44d4c29ac93aab416aa8ef8e";
-        //var consumerSecret = "cs_37abbda659e5932b286546890322d2fd55e9e298";
+        var consumerKey = "ck_a0625b314db9ab7f44d4c29ac93aab416aa8ef8e";
+        var consumerSecret = "cs_37abbda659e5932b286546890322d2fd55e9e298";
 
         // The woocommerce product id
         var productId = 11;
@@ -42,7 +42,6 @@ internal class Program
 
         try
         {
-
             // Activate and check a license
             // Checks if the license is valid for the current product
             await ActivateAndCheckLicense(client, licenseKey);
@@ -97,13 +96,9 @@ internal class Program
             ProductsUpdate(client, licenseKey);
 
         }
-        catch (LicenseManagerException lex)
-        {
-            Console.WriteLine($"License Error: {lex.ToString}");
-        }
         catch (Exception ex)
         {
-            Console.WriteLine($"Fatal Error: {ex.ToString}");
+            Console.WriteLine($"License Error: {ex.Message}");
         }
     }
 
@@ -131,18 +126,15 @@ internal class Program
 
     public static void CreateSingleLicense(LicenseManagerClient client)
     {
-        // TODO not working
-        // The license key could not be added to the database.
-        // https://github.com/wpexpertsio/license-manager-woocommerce/blob/53791ed76f3fd41aaa31ee435b721c3c8ab488af/includes/api/v2/Licenses.php#L390
-
         Console.WriteLine("Create a license");
 
         var newLicense = new CreateLicense()
         {
             OrderId = 0,
             ProductId = 11,
-            LicenseKey = "TEST-LICENSE", // Guid.NewGuid().ToString(),
+            LicenseKey = Guid.NewGuid().ToString(),
             ExpiresAt = DateTime.Now + TimeSpan.FromDays(7),
+            ValidFor = null,
             Status = LicenseStatus.Active,
             TimesActivatedMax = 10,
             UserId = 1,
@@ -156,21 +148,24 @@ internal class Program
 
     public static void UpdateLicense(LicenseManagerClient client, string licenseKey)
     {
-        // TODO not working
-        // The license key could not be updated
-
         Console.WriteLine("Update a license");
         var licenseKeyToUpdate = licenseKey;
 
-        var newLicenseData = new CreateLicense()
+        //var newLicenseData = new UpdateLicense()
+        //{
+        //    OrderId = 14,
+        //    ProductId = 11,
+        //    LicenseKey = licenseKeyToUpdate,
+        //    ExpiresAt = DateTime.Now + TimeSpan.FromDays(7),
+        //    Status = LicenseStatus.Active,
+        //    TimesActivatedMax = new Random().Next(1, 10000),
+        //    UserId = 1,
+        //};
+
+        var newLicenseData = new UpdateLicense()
         {
-            OrderId = 0,
-            ProductId = 11,
             LicenseKey = licenseKeyToUpdate,
-            ExpiresAt = DateTime.Now + TimeSpan.FromDays(7),
-            Status = LicenseStatus.Active,
             TimesActivatedMax = new Random().Next(1, 10000),
-            UserId = 1,
         };
 
         var updateLicenseResponse = client.UpdateLicenseAsync(newLicenseData, licenseKeyToUpdate).Result;
@@ -222,8 +217,7 @@ internal class Program
 
     public static void ValidateLicense(LicenseManagerClient client, string licenseKey)
     {
-        // TODO product always null?
-
+        // product is always null?
         Console.WriteLine("Validate a license:");
         var licenseResponse = client.ValidateLicenseAsync(licenseKey).Result;
 
@@ -325,7 +319,7 @@ internal class Program
     public static void GeneratorGenerate(LicenseManagerClient client, int generatorId)
     {
         // TODO not working
-        // seems like its not implemented by the WP plugin and the documentation is just wrong
+        // seems like its not implemented by the WP plugin and the documentation is just wrong or only for pro
         // No route was found matching the URL and request method
 
         Console.WriteLine("Generate License Keys");
