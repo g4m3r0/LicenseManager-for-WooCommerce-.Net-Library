@@ -44,15 +44,18 @@
         [JsonPropertyName("user_id")]
         public int UserId { get; set; }
 
+        /// <summary>
+        /// Gets the status of the license in the API format (e.g. active, inactive).
+        /// </summary>
         [JsonPropertyName("status")]
-        private string RawStatus
+        public string RawStatus
         {
             get
             {
-                return this.Status.ToString();
+                return this.Status.ToString().ToLower();
             }
 
-            set
+            private set
             {
                 if (this.RawStatus != value)
                 {

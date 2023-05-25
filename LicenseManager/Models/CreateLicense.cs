@@ -33,11 +33,18 @@
         /// </summary>
         [JsonPropertyName("expires_at")]
         [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-        public DateTime ExpiresAt { get; set; }
+        public DateTime? ExpiresAt { get; set; }
 
         /// <summary>
-        /// Gets or sets the status of the license (e.g., active, inactive).
+        /// Gets or sets the number of days the license is valid for.
         /// </summary>
+        [JsonPropertyName("validFor")]
+        public int? ValidFor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the status of the license (e.g. active, inactive).
+        /// </summary>
+        [JsonIgnore]
         public LicenseStatus Status { get; set; }
 
         /// <summary>
@@ -52,15 +59,18 @@
         [JsonPropertyName("user_id")]
         public int UserId { get; set; }
 
+        /// <summary>
+        /// Gets the status of the license in the API format (e.g. active, inactive).
+        /// </summary>
         [JsonPropertyName("status")]
-        private string RawStatus
+        public string RawStatus
         {
             get
             {
-                return this.Status.ToString();
+                return this.Status.ToString().ToLower();
             }
 
-            set
+            private set
             {
                 if (this.RawStatus != value)
                 {
