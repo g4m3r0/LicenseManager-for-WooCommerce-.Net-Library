@@ -95,13 +95,13 @@ LicenseCheckResponse checkResponse = client.CheckLicenseValidation(licenseRespon
 
 if (checkResponse.Success) 
 {
-  // Our license is passed the check!
+  // Our license has passed the check!
   Console.Log(checkResponse.Message);
 
-  // For example: Now track show/unlock the user interface
+  // For example: Now show/unlock the user interface
   ShowMyUI();
 } else {
-  // Our license could not be activated!
+  // Our license could not be validated!
   Console.Log(checkResponse.Message);
   return;
 }
