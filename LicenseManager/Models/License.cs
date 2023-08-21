@@ -32,7 +32,7 @@
         /// Gets or sets the ID of the user associated with the license.
         /// </summary>
         [JsonPropertyName("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the license key.
