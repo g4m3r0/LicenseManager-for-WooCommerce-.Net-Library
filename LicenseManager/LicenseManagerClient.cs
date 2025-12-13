@@ -411,7 +411,7 @@
             }
             finally
             {
-                response.Dispose();
+                response?.Dispose();
             }
         }
 
