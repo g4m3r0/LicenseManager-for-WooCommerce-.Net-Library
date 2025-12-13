@@ -73,24 +73,6 @@
 	    <DependentUpon>Messages.Designer.tt</DependentUpon>
 	  </Compile>
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net47'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net471'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
-	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 	  <PackageReference Include="System.Text.Json" Version="10.0.1" />
 	</ItemGroup>
