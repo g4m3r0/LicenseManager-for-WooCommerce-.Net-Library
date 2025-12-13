@@ -148,6 +148,7 @@
         /// <returns>A task that represents the asynchronous operation, containing the validation response.</returns>
         public async Task<LicenseValidationResponse> ValidateLicenseAsync(string licenseKey)
         {
+            // TODO: validation does not respect if license if expired (the backend returns success=true even if license is expired)
             var validation = await this.GetAsync<LicenseValidationResponse>($"licenses/validate/{licenseKey}").ConfigureAwait(false);
             return validation;
         }
