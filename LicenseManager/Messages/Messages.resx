@@ -124,4 +124,10 @@
   <data name="LicenseValidationSuccess" xml:space="preserve">
     <value>License was successfully validated.</value>
   </data>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>License has expired.</value>
+  </data>
+  <data name="ServerConnectionError" xml:space="preserve">
+    <value>Could not connect to the license server.</value>
+  </data>
 </root>

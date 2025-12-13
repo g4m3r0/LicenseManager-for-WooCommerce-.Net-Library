@@ -405,6 +405,16 @@
             {
                 throw;
             }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
+            catch (TaskCanceledException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
@@ -456,6 +466,16 @@
             {
                 throw;
             }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
+            catch (TaskCanceledException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
@@ -463,7 +483,7 @@
             }
             finally
             {
-                response.Dispose();
+                response?.Dispose();
             }
         }
 
@@ -507,6 +527,16 @@
             {
                 throw;
             }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
+            catch (TaskCanceledException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                throw new LicenseManagerException(ResourceManager.GetString("ServerConnectionError", this.cultureInfo));
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
@@ -514,7 +544,7 @@
             }
             finally
             {
-                response.Dispose();
+                response?.Dispose();
             }
         }
 
