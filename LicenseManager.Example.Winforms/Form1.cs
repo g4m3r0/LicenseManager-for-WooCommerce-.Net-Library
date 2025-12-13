@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace LicenseManager.Example.Winforms
 {
     using LicenseManager.Lib;
@@ -9,6 +11,8 @@ namespace LicenseManager.Example.Winforms
 
     public partial class Form1 : Form
     {
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public LicenseManagerClient? LicenseManager { get; set; }
 
         public Form1()
