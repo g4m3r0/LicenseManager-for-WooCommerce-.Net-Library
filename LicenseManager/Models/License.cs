@@ -1,6 +1,7 @@
 ﻿namespace LicenseManager.Lib.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using global::LicenseManager.Lib.Enums;
     using global::LicenseManager.Lib.JsonConverter;
@@ -10,6 +11,12 @@
     /// </summary>
     public class License
     {
+        /// <summary>
+        /// Gets or sets the extension data.
+        /// </summary>
+        [JsonExtensionData]
+        public Dictionary<string, object> ExtensionData { get; set; }
+
         /// <summary>
         /// Gets or sets the ID of the license.
         /// </summary>

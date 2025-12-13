@@ -266,6 +266,11 @@
                 return this.GenerateCheckLicenseResponse(false, "LicenseActivationFailed");
             }
 
+            if (licenseKeyResponse.Data.TimesActivated > licenseKeyResponse.Data.TimesActivatedMax)
+            {
+                return this.GenerateCheckLicenseResponse(false, "MaxActivationsReached");
+            }
+
             if (licenseKeyResponse.Data.LicenseKey != licenseKey)
             {
                 return this.GenerateCheckLicenseResponse(false, "LicenseKeyNotMatching");
@@ -274,11 +279,6 @@
             if (licenseKeyResponse.Data.ProductId != this.productId)
             {
                 return this.GenerateCheckLicenseResponse(false, "ProductIdNotMatching");
-            }
-
-            if (licenseKeyResponse.Data.TimesActivated > licenseKeyResponse.Data.TimesActivatedMax)
-            {
-                return this.GenerateCheckLicenseResponse(false, "MaxActivationsReached");
             }
 
             return this.GenerateCheckLicenseResponse(true, "LicenseActivationSuccess");
@@ -392,7 +392,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                    return this.DeserializeResponse<T>(responseBody);
                 }
                 else
                 {
@@ -443,7 +443,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                    return this.DeserializeResponse<T>(responseBody);
                 }
                 else
                 {
@@ -494,7 +494,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+                    return this.DeserializeResponse<T>(responseBody);
                 }
                 else
                 {
@@ -515,6 +515,33 @@
             {
                 response.Dispose();
             }
+        }
+
+        private T DeserializeResponse<T>(string responseBody)
+        {
+            var result = JsonSerializer.Deserialize<T>(responseBody, this.jsonSerializerOptions);
+
+            if (result is LicenseKeyResponse licenseKeyResponse &&
+                licenseKeyResponse.Success &&
+                licenseKeyResponse.Data?.ExtensionData?.ContainsKey("errors") == true)
+            {
+                var errorsElement = (JsonElement)licenseKeyResponse.Data.ExtensionData["errors"];
+                if (errorsElement.ValueKind == JsonValueKind.Object)
+                {
+                    foreach (var property in errorsElement.EnumerateObject())
+                    {
+                        if (property.Value.ValueKind == JsonValueKind.Array)
+                        {
+                            foreach (var error in property.Value.EnumerateArray())
+                            {
+                                throw new LicenseManagerException(error.GetString());
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
